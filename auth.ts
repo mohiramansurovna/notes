@@ -64,6 +64,7 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
             if(existingUser.theme){
                 token.theme=existingUser.theme
             }
+            
             return token;
         },
         async redirect({url, baseUrl}) {

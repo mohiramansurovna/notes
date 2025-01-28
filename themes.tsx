@@ -26,7 +26,7 @@ export const theme:themes= {
     'purple': {
         bg: '#28293d',
         asidebg: '#555184',
-        activebg: '2e3061',
+        activebg: '#2e3061',
         text: '#fee9ce',
         primary1: '#9997bc',
         primary2: '#b2a6be',

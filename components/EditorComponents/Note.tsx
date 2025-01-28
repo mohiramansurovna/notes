@@ -34,18 +34,18 @@ function PreNote({
         editNote(values, state, id);
     };
     
-    const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const debounced = useDebounce(form.watch, 1000);
+    const textArea = document.getElementById('text');
     useEffect(() => {
-        if (textAreaRef.current) {
-            textAreaRef.current.style.height = 'auto';
-            textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+        if (textArea) {
+            textArea.style.height = 'auto';
+            textArea.style.height = `${textArea.scrollHeight}px`;
         }
     }, [debounced]);
 
     const toggleFullScreen = () => {
-        if (!document.fullscreenElement && textAreaRef.current) {
-            textAreaRef.current.requestFullscreen();
+        if (!document.fullscreenElement && textArea) {
+            textArea.requestFullscreen();
         } else {
             document.exitFullscreen();
         }
@@ -69,8 +69,8 @@ function PreNote({
     return (
         <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className='absolute left-1/2 top-1/2 z-0 h-full w-3/4 -translate-x-1/2 -translate-y-1/2 py-10'>
-            <div className='flex w-full flex-row items-center justify-end'>
+            className='absolute z-0 w-3/4 h-full py-10 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2'>
+            <div className='flex flex-row items-center justify-end w-full'>
             <button
                     type='button'
                     onClick={toggleFullScreen}
@@ -84,7 +84,7 @@ function PreNote({
                     <BiSolidSave />
                 </button>
             </div>
-            <div className='flex h-12 w-full flex-row items-center justify-start overflow-clip text-ellipsis px-3'>
+            <div className='flex flex-row items-center justify-start w-full h-12 px-3 overflow-clip text-ellipsis'>
                 <Icon
                     form={form}
                     color={state.color}
@@ -99,7 +99,7 @@ function PreNote({
             </div>
             <textarea
                 {...form.register('text')}
-                ref={textAreaRef}
+                id='text'
                 className='mt-8 min-h-[calc(100vh-200px)] w-full resize-y outline-none'
                 style={memoizedStyles}
                 placeholder='start your writing from here...'
