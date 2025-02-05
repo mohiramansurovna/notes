@@ -8,7 +8,8 @@ export default function useImageUrl(setProgress:React.Dispatch<React.SetStateAct
             try{
                 const upload=await edgestore.profileImages.upload({file, onProgressChange:(progress:number)=>setProgress(progress),options:rest});
                 return {status:200,url:upload.url,miniUrl:upload.thumbnailUrl}
-            }catch{
+            }catch(e){
+                console.log('server error in useImageUrl',e)
                 return {status:400,url:'',miniUrl:''};
 
             }

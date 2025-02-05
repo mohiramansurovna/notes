@@ -12,9 +12,21 @@ function reducer(state: State, action: Action): State {
         case 'backgroundColor':
             return {...state, backgroundColor: action.payload as string};
         case 'fontWeight':
-            return {...state, fontWeight: action.payload as 'thin'|'extralight' | 'light' | 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold' | 'black'};
+            return {
+                ...state,
+                fontWeight: action.payload as
+                    | 'thin'
+                    | 'extralight'
+                    | 'light'
+                    | 'normal'
+                    | 'medium'
+                    | 'semibold'
+                    | 'bold'
+                    | 'extrabold'
+                    | 'black',
+            };
         case 'fontSize':
-            return {...state, fontSize: action.payload as number};
+            return {...state, fontSize: action.payload as string};
         case 'fontStyle':
             return {...state, fontStyle: action.payload as 'normal' | 'italic'};
         case 'fontFamily':
@@ -29,7 +41,7 @@ function reducer(state: State, action: Action): State {
                     | 'none'
                     | 'underline'
                     | 'overline'
-                    | 'line-through'                
+                    | 'line-through',
             };
         case 'textTransform':
             return {
@@ -43,37 +55,15 @@ function reducer(state: State, action: Action): State {
         case 'textAlign':
             return {...state, textAlign: action.payload as 'left' | 'right' | 'center' | 'justify'};
         case 'textShadow':
-            return {...state, textShadow: action.payload as [string, string, string] | 'none'};
+            return {...state, textShadow: action.payload as [string, string, string, string] | 'none'};
         case 'marginLeft':
             return {...state, marginLeft: action.payload as number};
         case 'marginTop':
             return {...state, marginTop: action.payload as number};
-        case 'init':
-            return {...(action.payload as State)};
         default:
             return state;
     }
 }
-const initialState: State = {
-    color: 'black',
-    backgroundColor: '#dcd1f3',
-    fontWeight: 'normal',
-    fontSize: 25,
-    fontStyle: 'normal',
-    fontFamily: 'irina-sans',
-    textDecoration: 'none',
-    textTransform: 'none',
-    letterSpacing: 1,
-    lineHeight: 'inherit',
-    textAlign: 'left',
-    textShadow: 'none',
-    marginLeft: 20,
-    marginTop: 20,
-};
-function init(): State {
-    return initialState;
-}
-
 export default function MainNote({
     note,
     id,
@@ -81,7 +71,6 @@ export default function MainNote({
     note: {title: string; text: string; createdDate: string; icon: string; state: State};
     id: string;
 }) {
-    const [state, dispatch] = useReducer(reducer, initialState, init)
     const [values, setValues] = useState<{
         title: string;
         text: string;
@@ -97,6 +86,8 @@ export default function MainNote({
             icon: note.icon,
         });
     }, [note]);
+    const initialState: State = note.state;
+    const [state, dispatch] = useReducer(reducer, initialState);
     return (
         values && (
             <main className='fixed w-screen h-screen p-0 m-0 overflow-y-scroll bg-bg'>

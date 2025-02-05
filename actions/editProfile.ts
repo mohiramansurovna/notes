@@ -5,8 +5,7 @@ import {z} from 'zod';
 import bcryptjs from 'bcryptjs';
 import {db} from '@/lib/db';
 import { ProfileImage } from '@/types';
-import { Theme } from '@/themes';
-export default async function editProfile(values: z.infer<typeof EditProfileSchema>, email: string, imageUrl:ProfileImage|null, theme:Theme) {
+export default async function editProfile(values: z.infer<typeof EditProfileSchema>, email: string, imageUrl:ProfileImage|null) {
     const verifications = EditProfileSchema.safeParse(values);
     if (!verifications.success) return {error: 'Invalid credentials'};
     const {name, password, newPassword, confirmPassword} = verifications.data;
@@ -19,7 +18,6 @@ export default async function editProfile(values: z.infer<typeof EditProfileSche
                 data: {
                     imageUrl: imageUrl.url,
                     miniImageUrl: imageUrl.miniUrl?imageUrl.miniUrl:'',
-                    theme
                 },
             })
             return {success: 'Profile image updated successfully'};

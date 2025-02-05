@@ -44,18 +44,20 @@ function PreNewNote({state, router}: {state: State; router: AppRouterInstance}) 
         color: state.color,
         backgroundColor: state.backgroundColor,
         fontWeight: state.fontWeight,
-        fontSize: state.fontSize,
+        fontSize: state.fontSize+'px',
         fontStyle: state.fontStyle,
         fontFamily: state.fontFamily,
         textDecoration: state.textDecoration,
         textTransform: state.textTransform,
-        letterSpacing: state.letterSpacing,
+        letterSpacing: state.letterSpacing+'px',
         lineHeight: state.lineHeight,
         textAlign: state.textAlign,
-        textShadow: state.textShadow === 'none' ? 'none' : state.textShadow.join(' '),
-        marginLeft: state.marginLeft,
-        marginTop: state.marginTop,
-    }), [state]);
+        textShadow: state.textShadow === 'none' ? 'none' : state.textShadow[0]+'px '+state.textShadow[1]+'px '+state.textShadow[2]+'px '+state.textShadow[3],
+        paddingLeft: state.marginLeft+'px',
+        paddingTop: state.marginTop+'px',
+        paddingRight: state.marginLeft+'px',
+        paddingBottom: state.marginTop+'px',
+        }), [state]);
     
     //this is for adjusting the height
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -77,7 +79,7 @@ function PreNewNote({state, router}: {state: State; router: AppRouterInstance}) 
     return error?<ErrorComponent error={error}/>:(
         <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className='absolute left-1/2 top-1/2 z-0 h-full w-3/4 -translate-x-1/2 -translate-y-1/2 py-10'>
+            className='absolute left-1/2 top-1/2 z-0 h-full w-5/6 -translate-x-1/2 -translate-y-1/2 py-10'>
             <div className='flex w-full flex-row items-center justify-end'>
                 <button
                     type='button'
@@ -110,5 +112,4 @@ function PreNewNote({state, router}: {state: State; router: AppRouterInstance}) 
     );
 }
 
-const NewNote=React.memo(PreNewNote);
-export default NewNote;
+export default PreNewNote;

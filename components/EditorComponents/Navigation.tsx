@@ -1,11 +1,14 @@
 'use client';
 import {State, Action} from '@/types';
 import React, {useEffect, useRef, useState} from 'react';
-import Image from 'next/image';
 import Edit from './Edit';
 import Font from './Font';
 import ColorText from './ColorText';
 import BackgroundColor from './BackgroundColor';
+import { RiQuillPenAiLine } from "react-icons/ri";
+import { PiTextAaDuotone } from "react-icons/pi";
+import { MdOutlineBrush } from "react-icons/md";
+import { VscSymbolColor } from "react-icons/vsc";
 
 function PreNavigation({state, dispatch}: {state: State; dispatch: React.Dispatch<Action>}) {
     const [editing, setEditing] = useState<
@@ -30,54 +33,36 @@ function PreNavigation({state, dispatch}: {state: State; dispatch: React.Dispatc
     return (
         <aside
             ref={asideRef}
-            className='fixed top-0 w-[264px]  right-0 flex flex-row justify-start h-full align-middle transition-all duration-150 shadow-lg shadow-gray-400'
-            style={{width:editing?'264px':'64px'}}>
-            <nav className='flex flex-col justify-start w-16 h-full bg-asidebg'>
+            className={`fixed top-0 w-[${editing?'264px':'64px'}] right-0 flex  flex-row justify-start h-full align-middle transition-all duration-150 shadow-lg shadow-shadow dark:shadow-darkshadow`}
+            >
+            <nav className='flex flex-col justify-center items-center gap-4 w-16 pt-4 h-full text-icon dark:text-darkicon bg-asidebg dark:bg-darkasidebg'>
                 <button
-                    className='flex flex-col justify-center w-16 h-12 align-middle'
+                    className='w-13 h-13 p-3 rounded-2xl hover:bg-activebg dark:hover:bg-darkactivebg'
                     onClick={() => {
                         setEditing('edit');
                     }}>
-                    <Image
-                        width={30}
-                        height={30}
-                        src='/Edit 3.svg'
-                        alt='Menu'
-                        className='self-center'
-                    />
+                    <RiQuillPenAiLine size={30} />
                 </button>
                 <button
-                    className='w-16 h-12 text-2xl text-center bg-primary1 font-alkatra'
+                    className='w-13 h-13 p-3 rounded-2xl hover:bg-activebg dark:hover:bg-darkactivebg'
                     onClick={() => {
                         setEditing('font');
                     }}>
-                    Aa
+                    <PiTextAaDuotone size={30} />
                 </button>
                 <button
-                    className='flex flex-col justify-center w-16 h-12 align-middle bg-primary2'
+                    className='w-13 h-13 p-3 rounded-2xl hover:bg-activebg dark:hover:bg-darkactivebg'
                     onClick={() => {
                         setEditing('colorText');
                     }}>
-                    <Image
-                        src='/Colorfilter.svg'
-                        alt='style'
-                        height={30}
-                        width={30}
-                        className='self-center'
-                    />
+                    <MdOutlineBrush size={30} />
                 </button>
                 <button
-                    className='flex flex-col justify-center w-16 h-12 align-middle bg-primary3'
+                    className='w-13 h-13 p-3 rounded-2xl hover:bg-activebg dark:hover:bg-darkactivebg'
                     onClick={() => {
                         setEditing('backgroundColor');
                     }}>
-                    <Image
-                        src='/Paint Palette.svg'
-                        alt='background-color'
-                        height={30}
-                        width={30}
-                        className='self-center'
-                    />
+                    <VscSymbolColor size={30} />
                 </button>
                 <button
                     className='flex flex-col justify-center w-16 h-screen align-middle'

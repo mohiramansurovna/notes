@@ -94,11 +94,33 @@
 .add-after:hover::after {
     visibility: visible;
 }
-
-.open-shut {
-    width: 200px;
-}
 html {
     scrollbar-width: thin; /* Adjust the scrollbar thickness */
     scrollbar-color: #e6e6e601 #e9e9e901; /* Thumb and Track colors */
+    --purple: #3a0860;
+    --purplesh: #600bd5;
+    --green: #238142;
+    --greensh: #01ff88;
+    --yellow: #e4c203;
+    --yellowsh: #ffff33;
+    --orange:#ec7d10;
+    --orangesh:#ff9f00;
+    --red:#fc2f00;
+    --redsh:#ff5e00;
+    --pink:#ec0868;
+    --pinksh:#ff00b8;
+    --active: var(--pink);
+    --shadow: var(--pink);
 }
+ 
+  .range::-webkit-slider-thumb {
+    background:red;
+    
+  }
+  
+  .range::-moz-range-thumb {
+    background: red;
+   
+  }
+  
+  

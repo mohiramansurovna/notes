@@ -14,7 +14,6 @@ import useImageUrl from '@/hooks/useImageUrl';
 import { ProfileImage } from '@/types';
 import { useSession } from 'next-auth/react';
 import { User } from '@prisma/client';
-import { Theme } from '@/themes';
 export default function Profile({user}: {user:User; router: AppRouterInstance}) {
     const [error, setError] = useState<string>();
     const [success, setSuccess] = useState<string>();
@@ -23,7 +22,6 @@ export default function Profile({user}: {user:User; router: AppRouterInstance}) 
     const [file, setFile] = useState<File|null>(null);
     const [progress, setProgress]=useState<number>(0);
     const session=useSession()
-    const [theme, setTheme]=useState<Theme>('regular')
 
     //uploading the image
     const getImageUrl=useImageUrl(setProgress, user.imageUrl);
@@ -49,7 +47,7 @@ export default function Profile({user}: {user:User; router: AppRouterInstance}) 
         const send=file?imageUrl:null;
         startTransition(() => {
             //there will be edit profile action
-            editProfile(values, user.email as string,send as ProfileImage, theme).then((res) => {
+            editProfile(values, user.email as string,send as ProfileImage).then((res) => {
                 if (res.error) {
                     setError(res.error);
                     form.reset();
@@ -72,11 +70,11 @@ export default function Profile({user}: {user:User; router: AppRouterInstance}) 
         },
     });
     return (
-        <>
+        <div id='profile'>
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 autoComplete='off'
-                className='flex flex-row justify-around items-center h-screen  w-full '>
+                className='flex flex-row justify-around items-center h-screen w-full '>
                 <fieldset
                     disabled={isPending}
                     className='flex flex-col justify-start align-middle w-1/2 h-3/4 -translate-y-12 disabled:opacity-40 transition-opacity duration-75'>
@@ -87,7 +85,7 @@ export default function Profile({user}: {user:User; router: AppRouterInstance}) 
                         Name
                     </label>
                     <input
-                        className='rounded-md px-2 py-1 mt-1 outline-[#65558F]  border border-[#65558F]'
+                        className='rounded-md px-2 py-1 mt-1 outline-darkshadow  border border-darkshadow'
                         id='name'
                         type='text'
                         {...form.register('name')}
@@ -98,7 +96,7 @@ export default function Profile({user}: {user:User; router: AppRouterInstance}) 
                         Current Password
                     </label>
                     <input
-                        className='rounded-md px-2 py-1 mt-1 outline-[#65558F]  border border-[#65558F]'
+                        className='rounded-md px-2 py-1 mt-1 outline-darkshadow  border border-darkshadow'
                         id='password'
                         type='password'
                         {...form.register('password')}
@@ -109,7 +107,7 @@ export default function Profile({user}: {user:User; router: AppRouterInstance}) 
                         New Password
                     </label>
                     <input
-                        className='rounded-md px-2 py-1 mt-1 outline-[#65558F] border border-[#65558F]'
+                        className='rounded-md px-2 py-1 mt-1 outline-darkshadow border border-darkshadow'
                         id='newPassword'
                         type='password'
                         {...form.register('newPassword')}
@@ -120,7 +118,7 @@ export default function Profile({user}: {user:User; router: AppRouterInstance}) 
                         Confirm Password
                     </label>
                     <input
-                        className='rounded-md px-2 py-1 mt-1 outline-[#65558F] border border-[#65558F]'
+                        className='rounded-md px-2 py-1 mt-1 outline-darkshadow border border-darkshadow'
                         id='confirmPassword'
                         type='password'
                         {...form.register('confirmPassword')}
@@ -130,12 +128,12 @@ export default function Profile({user}: {user:User; router: AppRouterInstance}) 
                     <div className='flex flex-row justify-between mt-10'>
                         <Link
                             href='/auth/'
-                            className='px-12 py-1 border border-[#65558F] rounded-md text-[#65558F] font-semibold hover:bg-[#dcd0f8] outline-none'>
+                            className='px-12 py-1 border border-darkshadow rounded-md text-darkshadow font-semibold hover:bg-[#dcd0f8] outline-none'>
                             Cancel
                         </Link>
                         <button
                             type='submit'
-                            className='px-12 py-1 border bg-[#65558F] rounded-md font-normal text-white hover:bg-[#45307c] outline-none'>
+                            className='px-12 py-1 bg-darkactivebg border border-darkactivebg rounded-md font-normal text-white hover:bg-darkactivebg outline-none'>
                             Save
                         </button>
                     </div>
@@ -156,16 +154,9 @@ export default function Profile({user}: {user:User; router: AppRouterInstance}) 
                     accept='image/*'
                     onChange={(e)=>setFile(e.target.files?e.target.files[0]:null)}
                 />
-                <div className='w-full h-[6px] bg-transparent border border-[#65558F] translate-y-32 rounded-xl'>
-                    <div className='h-full bg-[#65558F] transition-all duration-150' style={{width:`${progress}%`}}></div>
+                <div className='w-full h-[6px] bg-transparent border border-darkshadow translate-y-32 rounded-xl'>
+                    <div className='h-full bg-darkshadow transition-all duration-150' style={{width:`${progress}%`}}></div>
                 </div>
-            </label>
-            <label>
-                <select value={theme} onChange={(e)=>setTheme(e.target.value as Theme)}>
-                    <option value='regular'>Regular</option>
-                    <option value='purple'>Purple</option>
-                    <option value='minimalist'>Minimalist</option>
-                </select>
             </label>
             <img
                 alt='alt image'
@@ -183,6 +174,6 @@ export default function Profile({user}: {user:User; router: AppRouterInstance}) 
             </h3>
         </div>
             </form>
-        </>
+        </div>
     );
 }

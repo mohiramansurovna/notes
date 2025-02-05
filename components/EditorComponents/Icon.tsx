@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 import { TiWeatherShower, TiWeatherSnow, TiWeatherStormy, TiWeatherSunny } from 'react-icons/ti';
-import dynamic from 'next/dynamic';
-
-const GiMusicalNotes = dynamic(() => import('react-icons/gi').then((mod) => mod.GiMusicalNotes));
-const GiSly = dynamic(() => import('react-icons/gi').then((mod) => mod.GiSly));
-const PiGameControllerDuotone = dynamic(() => import('react-icons/pi').then((mod) => mod.PiGameControllerDuotone));
-const SiNotepadplusplus = dynamic(() => import('react-icons/si').then((mod) => mod.SiNotepadplusplus));
-const MdOutlineNightlightRound = dynamic(() => import('react-icons/md').then((mod) => mod.MdOutlineNightlightRound));
-
+import { MdOutlineNightlightRound } from 'react-icons/md';
+import {SiNotepadplusplus} from 'react-icons/si';
+import {GiMusicalNotes, GiSly} from 'react-icons/gi';
+import {PiGameControllerDuotone} from 'react-icons/pi';
 export enum IconId {
   Notepad = '0',
   Shower = '1',
@@ -43,7 +39,7 @@ export default function Icon({ form, color, backgroundColor }: { form: any; colo
         {icons[form.getValues('icon') as IconId]}
       </div>
       {!hid && (
-        <div className={`absolute -left-2 top-0 grid h-44 w-44 grid-cols-3 gap-2 rounded-xl p-2 bg-[${backgroundColor}]`}>
+        <div className={`absolute -left-2 top-0 grid h-44 w-44 grid-cols-3 gap-2 rounded-xl p-2 bg-asidebg dark:bg-darkasidebg`}>
           {Object.entries(icons).map(([key, Icon]) => (
             <div
               key={key}

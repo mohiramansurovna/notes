@@ -54,22 +54,24 @@ function PreNote({
         color: state.color,
         backgroundColor: state.backgroundColor,
         fontWeight: state.fontWeight,
-        fontSize: state.fontSize,
+        fontSize: state.fontSize+'px',
         fontStyle: state.fontStyle,
         fontFamily: state.fontFamily,
         textDecoration: state.textDecoration,
         textTransform: state.textTransform,
-        letterSpacing: state.letterSpacing,
+        letterSpacing: state.letterSpacing+'px',
         lineHeight: state.lineHeight,
         textAlign: state.textAlign,
-        textShadow: state.textShadow === 'none' ? 'none' : state.textShadow.join(' '),
-        marginLeft: state.marginLeft,
-        marginTop: state.marginTop,
+        textShadow: state.textShadow === 'none' ? 'none' :  state.textShadow[0]+'px '+state.textShadow[1]+'px '+state.textShadow[2]+'px '+state.textShadow[3],
+        paddingLeft: state.marginLeft+'px',
+        paddingTop: state.marginTop+'px',        
+        paddingRight: state.marginLeft+'px',
+        paddingBottom: state.marginTop+'px',
     }), [state]);
     return (
         <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className='absolute z-0 w-3/4 h-full py-10 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2'>
+            className='absolute z-0 w-5/6 h-full py-10 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2'>
             <div className='flex flex-row items-center justify-end w-full'>
             <button
                     type='button'
@@ -114,5 +116,5 @@ function PreNote({
     );
 }
 
-const Note = React.memo(PreNote);
-export default Note;
+// const Note = React.memo(PreNote);
+export default PreNote;

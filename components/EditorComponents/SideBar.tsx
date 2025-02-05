@@ -130,7 +130,7 @@ export default function SideBar() {
                             return (
                                 <div
                                     key={note.id}
-                                    className='flex flex-row w-full border-2 border-transparent hover:border-y-activebg dark:hover:border-y-darkactivebg'>
+                                    className='flex flex-row w-full'>
                                     <Link
                                         href={`/dashboard/note/${note.id}`}
                                         className={`${
@@ -139,7 +139,7 @@ export default function SideBar() {
                                                 : 'flex-row w-[176px] -mr-[18px] justify-start items-start p-3 rounded-r-full z-10'
                                         } flex gap-1 overflow-clip hover:bg-activebg dark:hover:bg-darkactivebg`}>
                                         <SendIcon icon={note.icon} />
-                                        <p className='w-full h-full pt-1 mx-1 font-medium duration-100 text-start text-text dark:text-darktext text-fit textdot'>
+                                        <p className='w-full h-full pt-1 mx-1 font-medium duration-100 text-center textdot'>
                                             {note.title}
                                         </p>
                                     </Link>

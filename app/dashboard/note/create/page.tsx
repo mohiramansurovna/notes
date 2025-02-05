@@ -12,9 +12,9 @@ function reducer(state: State, action: Action): State {
         case 'backgroundColor':
             return {...state, backgroundColor: action.payload as string};
         case 'fontWeight':
-            return {...state, fontWeight: action.payload as string};
+            return {...state, fontWeight: action.payload as 'thin'|'extralight' | 'light' | 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold' | 'black'};
         case 'fontSize':
-            return {...state, fontSize: action.payload as number};
+            return {...state, fontSize: action.payload as string};
         case 'fontStyle':
             return {...state, fontStyle: action.payload as 'normal' | 'italic'};
         case 'fontFamily':
@@ -43,10 +43,8 @@ function reducer(state: State, action: Action): State {
             return {...state, lineHeight: action.payload as number};
         case 'textAlign':
             return {...state, textAlign: action.payload as 'left' | 'right' | 'center' | 'justify'};
-        case 'wordSpacing':
-            return {...state, wordSpacing: action.payload as number};
         case 'textShadow':
-            return {...state, textShadow: action.payload as [string, string, string] | 'none'};
+            return {...state, textShadow: action.payload as [string, string, string,string] | 'none'};
         case 'marginLeft':
             return {...state, marginLeft: action.payload as number};
         case 'marginTop':
@@ -58,16 +56,15 @@ function reducer(state: State, action: Action): State {
 const initialState: State = {
     color: 'black',
     backgroundColor: '#ebe5fa',
-    fontWeight: '500',
-    fontSize: 25,
+    fontWeight: 'light',
+    fontSize: '25',
     fontStyle: 'normal',
-    fontFamily: 'irina-sans',
+    fontFamily: 'sans',
     textDecoration: 'none',
     textTransform: 'none',
     letterSpacing: 1,
     lineHeight: 'inherit',
     textAlign: 'left',
-    wordSpacing: 1,
     textShadow: 'none',
     marginLeft: 20,
     marginTop: 20,

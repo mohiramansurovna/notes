@@ -4,14 +4,13 @@ import {PrismaAdapter} from '@auth/prisma-adapter';
 import {db} from './lib/db';
 import {getUserById} from './lib/users';
 import {getAccountById} from './lib/accout';
-import { Note } from '@prisma/client';
 
 declare module "next-auth" {
     interface Session {
       user: {
         imageUrl?: string;
         miniImageUrl?: string;
-        theme?: string;
+        theme: string;
       } & DefaultSession["user"]
     }
   }
