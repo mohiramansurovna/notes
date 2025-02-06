@@ -14,7 +14,10 @@ model User {
   imageUrl     String?
   miniImageUrl String?
   password     String?
-  theme        String    @default("regular")
+  theme        String?
+  language     String? 
+  font         String?   
+  mode         String?    
   accounts     Account[]
   notes        Note[]    @relation("UserNotes")
 }

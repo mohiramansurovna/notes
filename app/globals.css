@@ -111,16 +111,14 @@ html {
     --pinksh:#ff00b8;
     --active: var(--pink);
     --shadow: var(--pink);
+
+    --font: 16px;
+    --font-sm: calc(var(--font) * 0.727);
+    --font-base: calc(var(--font) * 0.8);
+    --font-xl: calc(var(--font) * 1.273);
+    --font-2xl: calc(var(--font) * 1.545);
+    --font-3xl: calc(var(--font) * 1.818);
+    --font-4xl: calc(var(--font) * 2.142);
 }
- 
-  .range::-webkit-slider-thumb {
-    background:red;
-    
-  }
-  
-  .range::-moz-range-thumb {
-    background: red;
-   
-  }
-  
+
   

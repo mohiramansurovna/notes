@@ -55,9 +55,9 @@ function reducer(state: State, action: Action): State {
 }
 const initialState: State = {
     color: 'black',
-    backgroundColor: '#ebe5fa',
+    backgroundColor: '#1a1a1b',
     fontWeight: 'light',
-    fontSize: '25',
+    fontSize: '16',
     fontStyle: 'normal',
     fontFamily: 'sans',
     textDecoration: 'none',

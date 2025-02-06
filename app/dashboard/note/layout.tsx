@@ -1,11 +1,12 @@
 import SideBar from '@/components/EditorComponents/SideBar';
-import React from 'react';
+import Loading from '@/components/Loading';
+import React, {Suspense} from 'react';
 
-export default function layout({children}:{children:React.ReactNode}) {
+export default function layout({children}: {children: React.ReactNode}) {
     return (
         <div>
             <SideBar />
-            {children}
+            <Suspense fallback={<Loading />}>{children}</Suspense>
         </div>
     );
 }

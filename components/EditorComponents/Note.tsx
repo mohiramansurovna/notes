@@ -3,12 +3,12 @@ import editNote from '@/actions/editNote';
 import {NoteSchema} from '@/schemas';
 import {State} from '@/types';
 import {zodResolver} from '@hookform/resolvers/zod';
-import React, {useEffect, useMemo, useRef} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import * as z from 'zod';
 import Icon from './Icon';
 import dynamic from 'next/dynamic';
-import { useDebounce } from '@/hooks/useDebounce';
+import {useDebounce} from '@/hooks/useDebounce';
 const BiSolidSave = dynamic(() => import('react-icons/bi').then((mod) => mod.BiSolidSave));
 const AiOutlineFullscreen = dynamic(() =>
     import('react-icons/ai').then((mod) => mod.AiOutlineFullscreen)
@@ -22,6 +22,8 @@ function PreNote({
     id: string;
     values: {createdDate: string; icon: string; text: string; title: string};
 }) {
+    const [error, setError] = useState<string>('');
+    const [success, setSuccess] = useState<string>('');
     const form = useForm<z.infer<typeof NoteSchema>>({
         resolver: zodResolver(NoteSchema),
         defaultValues: {
@@ -31,9 +33,9 @@ function PreNote({
         },
     });
     const onSubmit = (values: z.infer<typeof NoteSchema>) => {
-        editNote(values, state, id);
+        editNote(values, state, id).then((res) => {});
     };
-    
+
     const debounced = useDebounce(form.watch, 1000);
     const textArea = document.getElementById('text');
     useEffect(() => {
@@ -50,30 +52,42 @@ function PreNote({
             document.exitFullscreen();
         }
     };
-    const memoizedStyles = useMemo(() => ({
-        color: state.color,
-        backgroundColor: state.backgroundColor,
-        fontWeight: state.fontWeight,
-        fontSize: state.fontSize+'px',
-        fontStyle: state.fontStyle,
-        fontFamily: state.fontFamily,
-        textDecoration: state.textDecoration,
-        textTransform: state.textTransform,
-        letterSpacing: state.letterSpacing+'px',
-        lineHeight: state.lineHeight,
-        textAlign: state.textAlign,
-        textShadow: state.textShadow === 'none' ? 'none' :  state.textShadow[0]+'px '+state.textShadow[1]+'px '+state.textShadow[2]+'px '+state.textShadow[3],
-        paddingLeft: state.marginLeft+'px',
-        paddingTop: state.marginTop+'px',        
-        paddingRight: state.marginLeft+'px',
-        paddingBottom: state.marginTop+'px',
-    }), [state]);
+    const memoizedStyles = useMemo(
+        () => ({
+            color: state.color,
+            backgroundColor: state.backgroundColor,
+            fontWeight: state.fontWeight,
+            fontSize: state.fontSize + 'px',
+            fontStyle: state.fontStyle,
+            fontFamily: state.fontFamily,
+            textDecoration: state.textDecoration,
+            textTransform: state.textTransform,
+            letterSpacing: state.letterSpacing + 'px',
+            lineHeight: state.lineHeight,
+            textAlign: state.textAlign,
+            textShadow:
+                state.textShadow === 'none'
+                    ? 'none'
+                    : state.textShadow[0] +
+                      'px ' +
+                      state.textShadow[1] +
+                      'px ' +
+                      state.textShadow[2] +
+                      'px ' +
+                      state.textShadow[3],
+            paddingLeft: state.marginLeft + 'px',
+            paddingTop: state.marginTop + 'px',
+            paddingRight: state.marginLeft + 'px',
+            paddingBottom: state.marginTop + 'px',
+        }),
+        [state]
+    );
     return (
         <form
             onSubmit={form.handleSubmit(onSubmit)}
             className='absolute z-0 w-5/6 h-full py-10 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2'>
             <div className='flex flex-row items-center justify-end w-full'>
-            <button
+                <button
                     type='button'
                     onClick={toggleFullScreen}
                     className={`text-[${state.color}] rounded-md border border-transparent px-3 py-2 text-xl font-normal outline-none`}>
@@ -81,8 +95,7 @@ function PreNote({
                 </button>
                 <button
                     type='submit'
-                    className={`text-[${state.color}] border-transparent rounded-md border px-3 py-2 text-xl font-normal outline-none`}
-                    >
+                    className={`text-[${state.color}] border-transparent rounded-md border px-3 py-2 text-xl font-normal outline-none`}>
                     <BiSolidSave />
                 </button>
             </div>

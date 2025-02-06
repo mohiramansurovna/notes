@@ -3,7 +3,7 @@ import {Action, State} from '@/types';
 import {useTheme} from 'next-themes';
 import React from 'react';
 
-export default function ColorText({
+function BackgroundColor({
     state,
     dispatch,
 }: {
@@ -42,3 +42,4 @@ export default function ColorText({
         </div>
     );
 }
+export default React.memo(BackgroundColor);

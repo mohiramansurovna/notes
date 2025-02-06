@@ -1,7 +1,7 @@
 import React from 'react'
 import { fonts } from '@/Edits';
 import { Action, State } from '@/types';
-export default function Font({state, dispatch}:{state:State, dispatch:React.Dispatch<Action>}) {
+function Font({state, dispatch}:{state:State, dispatch:React.Dispatch<Action>}) {
     return (
         <div
             className='flex flex-col items-center justify-start w-48 h-screen py-5 overflow-y-scroll text-xl bg-asidebg dark:bg-darkasidebg'>
@@ -22,3 +22,4 @@ export default function Font({state, dispatch}:{state:State, dispatch:React.Disp
         </div>
     );
 }
+export default React.memo(Font)

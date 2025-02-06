@@ -1,6 +1,5 @@
-import { plugin } from 'postcss';
 import type {Config} from 'tailwindcss';
-
+export let baseFontSize = 16;
 const config: Config = {
     darkMode: ['class'],
     content: [
@@ -49,6 +48,15 @@ const config: Config = {
                 offside: ['var(--font-offside)'],
                 oregano: ['var(--font-oregano)'],
                 sans: ['var(--font-quicksand)'],
+            },
+            fontSize: {
+                sm: `var(--font-sm)`,
+                base: `var(--font-base)`,
+                lg: `var(--font)`,
+                xl: `var(--font-xl)`,
+                '2xl': `var(--font-2xl)`,
+                '3xl': `var(--font-3xl)`,
+                '4xl': `var(--font-4xl)`,
             },
         },
     },

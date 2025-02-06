@@ -12,6 +12,7 @@ import { LuDelete } from 'react-icons/lu';
 import { IoSettingsOutline,IoMenuOutline } from 'react-icons/io5';
 import { IoIosLogOut  } from 'react-icons/io';
 import {LuPencil} from 'react-icons/lu';
+
 const ProfileSection = memo(({long, user}: {long: boolean; user: any}) => {
     return (
         <section
@@ -72,8 +73,7 @@ export default function SideBar() {
             if (!notes) return;
             setNotes(notes);
         });
-    }, [user?.id]);
-
+    }, [user]);
     const handleDeleteNote = useCallback(async (noteId: string) => {
         await deleteNote(noteId);
         session.update()

@@ -18,6 +18,9 @@ import {
     Oregano,
 } from 'next/font/google';
 import {Providers} from '../providers';
+import I18nProvider from '@/components/I18nProvider';
+import {Suspense} from 'react';
+import Loading from '@/components/Loading';
 
 const quicksand = Quicksand({
     subsets: ['latin'],
@@ -111,11 +114,15 @@ export default function RootLayout({
                 />
             </head>
             <body className='w-screen h-screen p-0 m-0 overflow-x-hidden dark:bg-[#181818] font-sans'>
-                <EdgeStoreProvider basePath='/api/edgestore'>
-                    <SessionProvider>
-                        <Providers>{children}</Providers>
-                    </SessionProvider>
-                </EdgeStoreProvider>
+                <I18nProvider>
+                    <Suspense fallback={<Loading />}>
+                        <EdgeStoreProvider basePath='/api/edgestore'>
+                            <SessionProvider>
+                                <Providers>{children}</Providers>
+                            </SessionProvider>
+                        </EdgeStoreProvider>
+                    </Suspense>
+                </I18nProvider>
             </body>
         </html>
     );

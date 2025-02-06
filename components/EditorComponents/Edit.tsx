@@ -1,5 +1,5 @@
 import {Action, State} from '@/types';
-import React, {use, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     CiTextAlignLeft,
     CiTextAlignCenter,
@@ -150,7 +150,7 @@ const Font = ({state, dispatch}: {state: State; dispatch: React.Dispatch<Action>
         </div>
     );
 };
-const Text = ({state, dispatch}: {state: State; dispatch: React.Dispatch<Action>}) => {
+const Text = React.memo(({state, dispatch}: {state: State; dispatch: React.Dispatch<Action>}) => {
     return (
         <div>
             <h3 className='w-full my-2 border border-transparent border-b-[#00000022] dark:border-b-[#ffffff22]'>
@@ -228,8 +228,8 @@ const Text = ({state, dispatch}: {state: State; dispatch: React.Dispatch<Action>
             </div>
         </div>
     );
-};
-const Paper = ({state, dispatch}: {state: State; dispatch: React.Dispatch<Action>}) => {
+})
+const Paper = React.memo(({state, dispatch}: {state: State; dispatch: React.Dispatch<Action>}) => {
     return (
         <div>
             <h3 className='w-full my-2 border border-transparent border-b-[#00000022] dark:border-b-[#ffffff22]'>
@@ -251,30 +251,14 @@ const Paper = ({state, dispatch}: {state: State; dispatch: React.Dispatch<Action
                     type='number'
                 />
             </div>
-            {/* <div className='flex flex-row items-center justify-around w-full mb-2'>
-                <MdLensBlur className='w-4 -mr-5' />
-                <input
-                    className='w-1/4 rounded-md border border-[#00000044] bg-inherit outline-none'
-                    value={state.lineHeight}
-                    onChange={(e) => dispatch({type: 'lineHeight', payload: e.target.value})}
-                    type='number'
-                />
-                <IoMdColorFill className='w-4 -mr-5' />
-                <input
-                    className='w-1/4 rounded-md border border-[#00000044] bg-inherit outline-none'
-                    value={state.letterSpacing}
-                    onChange={(e) => dispatch({type: 'letterSpacing', payload: e.target.value})}
-                    type='number'
-                />
-            </div> */}
         </div>
     );
-};
-const Shadow = ({state, dispatch}: {state: State; dispatch: React.Dispatch<Action>}) => {
-    const [shadow, setShadow] = useState(state.textShadow=='none'?['0','0','0','#00000000']:state.textShadow);
-    useEffect(()=>{
-        dispatch({type:'textShadow', payload: shadow});
-    },[shadow])
+})
+const Shadow = React.memo(({state, dispatch}: {state: State; dispatch: React.Dispatch<Action>}) => {
+    const [shadow, setShadow] = useState(state.textShadow === 'none' ? ['0', '0', '0', '#000000'] : state.textShadow);
+    useEffect(() => {
+        dispatch({type: 'textShadow', payload: shadow});
+    }, [shadow]);
     return (
         <div>
             <h3 className='w-full my-2 border border-transparent border-b-[#00000022] dark:border-b-[#ffffff22]'>
@@ -315,7 +299,7 @@ const Shadow = ({state, dispatch}: {state: State; dispatch: React.Dispatch<Actio
             </div>
         </div>
     );
-};
+})
 export default function Edit({state, dispatch}: {state: State; dispatch: React.Dispatch<Action>}) {
     return (
         <div className='flex flex-col items-start justify-start w-48 gap-5 py-5 text-lg bg-asidebg dark:bg-darkasidebg h-screen overflow-y-scroll scroll-smooth'>

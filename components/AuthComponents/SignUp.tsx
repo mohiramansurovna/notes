@@ -46,7 +46,7 @@ export default function SignUp({router}: {router: AppRouterInstance}) {
         if (success) {
             setTimeout(() => {
                 router.push('/auth/login');
-            }, 3000);
+            }, 1000);
         }
     }, [success]);
     return (

@@ -11,6 +11,7 @@ import Icon from './Icon';
 import { useDebounce } from '@/hooks/useDebounce';
 import dynamic from 'next/dynamic';
 import useCurrentUserId from '@/hooks/useCurrentUserId';
+import { useSession } from 'next-auth/react';
 const BiSolidSave = dynamic(() => import('react-icons/bi').then((mod) => mod.BiSolidSave));
 const AiOutlineFullscreen = dynamic(() =>
     import('react-icons/ai').then((mod) => mod.AiOutlineFullscreen)
@@ -19,6 +20,7 @@ const AiOutlineFullscreen = dynamic(() =>
 
 function PreNewNote({state, router}: {state: State; router: AppRouterInstance}) {
     const userId = useCurrentUserId();
+    const session=useSession()
     const [error, setError] = useState<string | null>(null);
     const form = useForm<z.infer<typeof NoteSchema>>({
         resolver: zodResolver(NoteSchema),
@@ -35,6 +37,7 @@ function PreNewNote({state, router}: {state: State; router: AppRouterInstance}) 
             if (res.error) {
                 setError(res.error);
             } else {
+                session.update()
                 router.replace('/dashboard/note/' + res.id);
             }
         });

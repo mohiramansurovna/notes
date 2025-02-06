@@ -1,19 +1,22 @@
-import NextAuth,{DefaultSession} from 'next-auth';
+import NextAuth, {DefaultSession} from 'next-auth';
 import authConfig from './auth.config';
 import {PrismaAdapter} from '@auth/prisma-adapter';
 import {db} from './lib/db';
 import {getUserById} from './lib/users';
 import {getAccountById} from './lib/accout';
 
-declare module "next-auth" {
+declare module 'next-auth' {
     interface Session {
-      user: {
-        imageUrl?: string;
-        miniImageUrl?: string;
-        theme: string;
-      } & DefaultSession["user"]
+        user: {
+            imageUrl?: string;
+            miniImageUrl?: string;
+            theme: string;
+            mode: string;
+            font: string;
+            language: string;
+        } & DefaultSession['user'];
     }
-  }
+}
 export const {handlers, signIn, signOut, auth} = NextAuth({
     ...authConfig,
     adapter: PrismaAdapter(db),
@@ -32,16 +35,25 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
             }
 
             if (session.user) {
-                session.user.name = token.name as string ;
+                session.user.name = token.name as string;
                 session.user.email = token.email as string;
                 if (token.imageUrl) {
                     session.user.imageUrl = token.imageUrl as string;
                 }
-                if(token.miniImage){
+                if (token.miniImage) {
                     session.user.miniImageUrl = token.miniImageUrl as string;
                 }
-                if(token.theme){
-                    session.user.theme=token.theme as string;
+                if (token.theme) {
+                    session.user.theme = token.theme as string;
+                }
+                if (token.mode) {
+                    session.user.mode = token.mode as string;
+                }
+                if (token.font) {
+                    session.user.font = token.font as string;
+                }
+                if (token.language) {
+                    session.user.language = token.language as string;
                 }
             }
             return session;
@@ -57,13 +69,21 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
             if (existingUser.imageUrl) {
                 token.imageUrl = existingUser.imageUrl;
             }
-            if(existingUser.miniImageUrl){
+            if (existingUser.miniImageUrl) {
                 token.miniImageUrl = existingUser.miniImageUrl;
             }
-            if(existingUser.theme){
-                token.theme=existingUser.theme
+            if (existingUser.theme) {
+                token.theme = existingUser.theme;
             }
-            
+            if (existingUser.mode) {
+                token.mode = existingUser.mode;
+            }
+            if (existingUser.font) {
+                token.font = existingUser.font;
+            }
+            if (existingUser.language) {
+                token.language = existingUser.language;
+            }
             return token;
         },
         async redirect({url, baseUrl}) {
