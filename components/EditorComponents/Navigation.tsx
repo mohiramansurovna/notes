@@ -1,5 +1,4 @@
 'use client';
-import {State, Action} from '@/types';
 import React, {useEffect, useRef, useState} from 'react';
 import Edit from './Edit';
 import Font from './Font';
@@ -9,13 +8,13 @@ import {RiQuillPenAiLine} from 'react-icons/ri';
 import {PiTextAaDuotone} from 'react-icons/pi';
 import {MdOutlineBrush} from 'react-icons/md';
 import {VscSymbolColor} from 'react-icons/vsc';
-
-function PreNavigation({state, dispatch}: {state: State; dispatch: React.Dispatch<Action>}) {
+import {GiFlowerTwirl} from 'react-icons/gi';
+import Stickers from './Stickers';
+function PreNavigation() {
     const [editing, setEditing] = useState<
-        'edit' | 'font' | 'colorText' | 'backgroundColor' | null
+        'edit' | 'font' | 'colorText' | 'backgroundColor' | 'stickers' | null
     >(null);
     const asideRef = useRef(null);
-
     //this is for closing the navigation
     useEffect(() => {
         function handler(event: MouseEvent) {
@@ -35,13 +34,13 @@ function PreNavigation({state, dispatch}: {state: State; dispatch: React.Dispatc
             ref={asideRef}
             className={`fixed top-0 w-[${
                 editing ? '264px' : '64px'
-            }] right-0 flex  flex-row justify-start h-full align-middle transition-all duration-150 shadow-lg shadow-shadow dark:shadow-darkshadow`}>
-            <nav className='flex flex-col justify-center items-center gap-4 w-16 pt-4 h-full text-icon dark:text-darkicon bg-asidebg dark:bg-darkasidebg'>
+            }] right-0 flex  flex-row justify-start h-full align-middle transition-all duration-150 shadow-lg shadow-shadow`}>
+            <nav className='flex flex-col items-center justify-center w-16 h-full gap-4 pt-4 bg-asidebg dark:bg-darkasidebg'>
                 <button
                     className={`w-13 h-13 p-3 rounded-2xl  ${
                         editing === 'edit'
-                            ? 'text-activebg dark:text-darkactivebg'
-                            : 'hover:bg-activebg dark:hover:bg-darkactivebg'
+                            ? 'text-main dark:text-darkmain'
+                            : 'hover:bg-main dark:hover:bg-darkmain'
                     } `}
                     onClick={() => {
                         setEditing('edit');
@@ -51,8 +50,8 @@ function PreNavigation({state, dispatch}: {state: State; dispatch: React.Dispatc
                 <button
                     className={`w-13 h-13 p-3 rounded-2xl  ${
                         editing === 'font'
-                            ? 'text-activebg dark:text-darkactivebg'
-                            : 'hover:bg-activebg dark:hover:bg-darkactivebg'
+                            ? 'text-main dark:text-darkmain'
+                            : 'hover:bg-main dark:hover:bg-darkmain'
                     }`}
                     onClick={() => {
                         setEditing('font');
@@ -62,8 +61,8 @@ function PreNavigation({state, dispatch}: {state: State; dispatch: React.Dispatc
                 <button
                     className={`w-13 h-13 p-3 rounded-2xl ${
                         editing === 'colorText'
-                            ? 'text-activebg dark:text-darkactivebg'
-                            : ' hover:bg-activebg dark:hover:bg-darkactivebg'
+                            ? 'text-main dark:text-darkmain'
+                            : 'hover:bg-main dark:hover:bg-darkmain'
                     }`}
                     onClick={() => {
                         setEditing('colorText');
@@ -73,8 +72,8 @@ function PreNavigation({state, dispatch}: {state: State; dispatch: React.Dispatc
                 <button
                     className={`w-13 h-13 p-3 rounded-2xl ${
                         editing === 'backgroundColor'
-                            ? 'text-activebg dark:text-darkactivebg'
-                            : ' hover:bg-activebg dark:hover:bg-darkactivebg'
+                            ? 'text-main dark:text-darkmain'
+                            : 'hover:bg-main dark:hover:bg-darkmain'
                     }`}
                     onClick={() => {
                         setEditing('backgroundColor');
@@ -82,31 +81,33 @@ function PreNavigation({state, dispatch}: {state: State; dispatch: React.Dispatc
                     <VscSymbolColor size={30} />
                 </button>
                 <button
+                    className={`w-13 h-13 p-3 rounded-2xl ${
+                        editing === 'stickers'
+                            ? 'text-main dark:text-darkmain'
+                            : 'hover:bg-main dark:hover:bg-darkmain'
+                    }`}
+                    onClick={() => {
+                        setEditing('stickers');
+                    }}>
+                    <GiFlowerTwirl size={30} />
+                </button>
+
+                <button
                     className='flex flex-col justify-center w-16 h-screen align-middle'
                     onClick={() => {
                         setEditing(null);
                     }}></button>
             </nav>
             {editing === 'edit' ? (
-                <Edit
-                    state={state}
-                    dispatch={dispatch}
-                />
+                <Edit />
             ) : editing === 'font' ? (
-                <Font
-                    state={state}
-                    dispatch={dispatch}
-                />
+                <Font />
             ) : editing === 'colorText' ? (
-                <ColorText
-                    state={state}
-                    dispatch={dispatch}
-                />
+                <ColorText />
             ) : editing === 'backgroundColor' ? (
-                <BackgroundColor
-                    state={state}
-                    dispatch={dispatch}
-                />
+                <BackgroundColor />
+            ) : editing === 'stickers' ? (
+                <Stickers/>
             ) : null}
         </aside>
     );

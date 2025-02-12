@@ -1,4 +1,3 @@
-import {Action, State} from '@/types';
 import React, {useEffect, useState} from 'react';
 import {
     CiTextAlignLeft,
@@ -12,23 +11,28 @@ import {IoMdColorFill} from 'react-icons/io';
 import {MdLensBlur} from 'react-icons/md';
 import {RiLetterSpacing2, RiLineHeight2} from 'react-icons/ri';
 import {TbAxisX, TbAxisY} from 'react-icons/tb';
-import { AiOutlineVerticalAlignTop } from "react-icons/ai";
-import { BiHorizontalLeft } from "react-icons/bi";
+import {AiOutlineVerticalAlignTop} from 'react-icons/ai';
+import {BiHorizontalLeft} from 'react-icons/bi';
+import {useTranslation} from 'react-i18next';
+import {t} from 'i18next';
+import {useNoteStore} from '@/store/note';
 
-const Font = ({state, dispatch}: {state: State; dispatch: React.Dispatch<Action>}) => {
+const Font = () => {
+    const {t} = useTranslation();
+    const {state, setProperty} = useNoteStore();
     //TODO:every font has diffrent weight and i should not add weight that is not approprite
     return (
         <div>
-            <h3 className='w-full my-2 text-xl border border-transparent border-b-[#00000022] dark:border-b-[#ffffff22]'>
-                Font
+            <h3 className='w-full my-2 border border-transparent border-b-[#00000022] dark:border-b-[#ffffff22]'>
+                {t('font')}
             </h3>
             <div className='grid w-full grid-cols-4 grid-rows-3 gap-2 mb-2 gap-y-3'>
                 <button
                     onClick={() => {
-                        dispatch({
-                            type: 'fontStyle',
-                            payload: state.fontStyle === 'italic' ? 'normal' : 'italic',
-                        });
+                        setProperty(
+                            'fontStyle',
+                            state.fontStyle === 'italic' ? 'normal' : 'italic'
+                        );
                     }}
                     className={`border p-1 ${
                         state.fontStyle === 'italic'
@@ -42,94 +46,105 @@ const Font = ({state, dispatch}: {state: State; dispatch: React.Dispatch<Action>
                     id='fontWeight'
                     className='col-span-3 text-base outline-none bg-asidebg dark:bg-darkasidebg'
                     onChange={(e) => {
-                        dispatch({type: 'fontWeight', payload: e.target.value});
+                        setProperty(
+                            'fontWeight',
+                            e.target.value as
+                                | 'thin'
+                                | 'extralight'
+                                | 'light'
+                                | 'normal'
+                                | 'medium'
+                                | 'semibold'
+                                | 'bold'
+                                | 'extrabold'
+                                | 'black'
+                        );
                     }}>
                     <option
                         value='thin'
-                        className='font-thin text-text dark:text-darktext'>
-                        Thin
+                        className='font-thin'>
+                        {t('thin')}
                     </option>
                     <option
                         value='extralight'
-                        className='font-extralight text-text dark:text-darktext'>
-                        Extra light
+                        className='font-extralight '>
+                        {t('extraLight')}
                     </option>
                     <option
                         value='light'
-                        className='font-light text-text dark:text-darktext'>
-                        Light
+                        className='font-light '>
+                        {t('light')}
                     </option>
                     <option
                         value='normal'
-                        className='font-normal text-text dark:text-darktext'>
-                        Normal
+                        className='font-normal '>
+                        {t('normal')}
                     </option>
                     <option
                         value='medium'
-                        className='font-medium text-text dark:text-darktext'>
-                        Medium
+                        className='font-medium '>
+                        {t('medium')}
                     </option>
                     <option
                         value='semibold'
-                        className='font-semibold text-text dark:text-darktext'>
-                        Semibold
+                        className='font-semibold '>
+                        {t('semiBold')}
                     </option>
                     <option
                         value='bold'
-                        className='font-bold text-text dark:text-darktext'>
-                        Bold
+                        className='font-bold '>
+                        {t('bold')}
                     </option>
                     <option
                         value='extrabold'
-                        className='font-extrabold text-text dark:text-darktext'>
-                        Extra Bold
+                        className='font-extrabold '>
+                        {t('extraBold')}
                     </option>
                     <option
                         value='black'
-                        className='font-black text-text dark:text-darktext'>
-                        Black
+                        className='font-black '>
+                        {t('black')}
                     </option>
                 </select>
 
                 <input
                     className='border border-[#00000022] dark:border-[#ffffff22] bg-inherit outline-none'
                     value={state.fontSize}
-                    onChange={(e) => dispatch({type: 'fontSize', payload: e.target.value})}
+                    onChange={(e) => setProperty('fontSize', e.target.value)}
                     type='number'
                 />
                 <select
                     className='col-span-3 text-base outline-none bg-asidebg dark:bg-darkasidebg'
                     value={state.textDecoration}
                     onChange={(e) => {
-                        dispatch({type: 'textDecoration', payload: e.target.value});
+                        setProperty(
+                            'textDecoration',
+                            e.target.value as 'none' | 'underline' | 'overline' | 'line-through'
+                        );
                     }}>
+                    <option value='none'>{t('none')}</option>
                     <option
-                        className='text-text dark:text-darktext'
-                        value='none'>
-                        None
-                    </option>
-                    <option
-                        className='underline text-text dark:text-darktext'
+                        className='underline '
                         value='underline'>
-                        Underline
+                        {t('underline')}
                     </option>
                     <option
-                        className='text-text dark:text-darktext overline'
+                        className=' overline'
                         value='overline'>
-                        Overline
+                        {t('overline')}
                     </option>
                     <option
-                        className='line-through text-text dark:text-darktext'
+                        className='line-through '
                         value='line-through'>
-                        Line-through
+                        {t('lineThrough')}
                     </option>
                 </select>
 
                 <button
                     onClick={() => {
                         const colorc = state.color;
-                        dispatch({type: 'color', payload: state.backgroundColor});
-                        dispatch({type: 'backgroundColor', payload: colorc});
+                        setProperty('color', state.backgroundColor);
+                        setProperty('backgroundColor', colorc);
                     }}
                     data-text='text align left'
                     className='border border-[#00000022] dark:border-[#ffffff22] bg-inherit outline-none p-1.5'>
@@ -139,30 +154,31 @@ const Font = ({state, dispatch}: {state: State; dispatch: React.Dispatch<Action>
                     className='col-span-3 text-base outline-none bg-asidebg dark:bg-darkasidebg'
                     value={state.textTransform}
                     onChange={(e) => {
-                        dispatch({type: 'textTransform', payload: e.target.value});
+                        setProperty(
+                            'textTransform',
+                            e.target.value as 'none' | 'capitalize' | 'uppercase' | 'lowercase'
+                        );
                     }}>
-                    <option value='none'>None</option>
-                    <option value='capitalize'>Capitalize</option>
-                    <option value='uppercase'>UPPERCASE</option>
-                    <option value='lowercase'>lowercase</option>
+                    <option value='none'>{t('none')}</option>
+                    <option value='capitalize'>{t('capitalize')}</option>
+                    <option value='uppercase'>{t('uppercase')}</option>
+                    <option value='lowercase'>{t('lowercase')}</option>
                 </select>
             </div>
         </div>
     );
 };
-const Text = React.memo(({state, dispatch}: {state: State; dispatch: React.Dispatch<Action>}) => {
+const Text = React.memo(() => {
+    const {state, setProperty} = useNoteStore();
     return (
         <div>
             <h3 className='w-full my-2 border border-transparent border-b-[#00000022] dark:border-b-[#ffffff22]'>
-                Text
+                {t('text')}
             </h3>
-            <div className='flex flex-row px-5 justify-around w-1/2 mb-2'>
+            <div className='flex flex-row justify-around w-1/2 px-5 mb-2'>
                 <button
                     onClick={() => {
-                        dispatch({
-                            type: 'textAlign',
-                            payload: 'left',
-                        });
+                        setProperty('textAlign', 'left');
                     }}
                     data-text='text align left'
                     className={`add-after relative rounded-sm p-1 hover:bg-[#00000011] dark:hover:bg-[#ffffff11] ${
@@ -172,10 +188,7 @@ const Text = React.memo(({state, dispatch}: {state: State; dispatch: React.Dispa
                 </button>
                 <button
                     onClick={() => {
-                        dispatch({
-                            type: 'textAlign',
-                            payload: 'center',
-                        });
+                        setProperty('textAlign', 'center');
                     }}
                     data-text='text align center'
                     className={`add-after relative rounded-sm p-1 hover:bg-[#00000011] dark:hover:bg-[#ffffff11] ${
@@ -185,10 +198,7 @@ const Text = React.memo(({state, dispatch}: {state: State; dispatch: React.Dispa
                 </button>
                 <button
                     onClick={() => {
-                        dispatch({
-                            type: 'textAlign',
-                            payload: 'right',
-                        });
+                        setProperty('textAlign', 'right');
                     }}
                     data-text='text align right'
                     className={`add-after relative rounded-sm p-1 hover:bg-[#00000011] dark:hover:bg-[#ffffff11] ${
@@ -198,10 +208,7 @@ const Text = React.memo(({state, dispatch}: {state: State; dispatch: React.Dispa
                 </button>
                 <button
                     onClick={() => {
-                        dispatch({
-                            type: 'textAlign',
-                            payload: 'justify',
-                        });
+                        setProperty('textAlign', 'justify');
                     }}
                     data-text='text align justify'
                     className={`add-after relative rounded-sm p-1 hover:bg-[#00000011] dark:hover:bg-[#ffffff11] ${
@@ -210,67 +217,72 @@ const Text = React.memo(({state, dispatch}: {state: State; dispatch: React.Dispa
                     <CiTextAlignJustify />
                 </button>
             </div>
-            <div className='flex flex-row px-2 items-center justify-around w-full mb-2'>
+            <div className='flex flex-row items-center justify-around w-full px-2 mb-2'>
                 <RiLineHeight2 className='w-4 -mr-5' />
                 <input
                     className='w-1/4 rounded-md border border-[#00000044] dark:border-[#ffffff44] bg-inherit outline-none'
                     value={state.lineHeight}
-                    onChange={(e) => dispatch({type: 'lineHeight', payload: e.target.value})}
+                    onChange={(e) => setProperty('lineHeight', parseInt(e.target.value))}
                     type='number'
                 />
                 <RiLetterSpacing2 className='w-4 -mr-5' />
                 <input
                     className='w-1/4 rounded-md border border-[#00000044] dark:border-[#ffffff44] bg-inherit outline-none'
                     value={state.letterSpacing}
-                    onChange={(e) => dispatch({type: 'letterSpacing', payload: e.target.value})}
+                    onChange={(e) => setProperty('letterSpacing', parseInt(e.target.value))}
+                    //TODO:letter spacing is parsing into int, do i need it???
                     type='number'
                 />
             </div>
         </div>
     );
-})
-const Paper = React.memo(({state, dispatch}: {state: State; dispatch: React.Dispatch<Action>}) => {
+});
+const Paper = React.memo(() => {
+    const {state, setProperty} = useNoteStore();
     return (
         <div>
             <h3 className='w-full my-2 border border-transparent border-b-[#00000022] dark:border-b-[#ffffff22]'>
-                Paper
+                {t('paper')}
             </h3>
             <div className='flex flex-row items-center justify-around w-full mb-2'>
-                <AiOutlineVerticalAlignTop  className='w-4 -mr-5' />
+                <AiOutlineVerticalAlignTop className='w-4 -mr-5' />
                 <input
                     className='w-1/4 rounded-md border border-[#00000044] bg-inherit outline-none'
                     value={state.marginTop}
-                    onChange={(e) => dispatch({type: 'marginTop', payload: e.target.value})}
+                    onChange={(e) => setProperty('marginTop', parseInt(e.target.value))}
                     type='number'
                 />
                 <BiHorizontalLeft className='w-4 -mr-5' />
                 <input
                     className='w-1/4 rounded-md border border-[#00000044] bg-inherit outline-none'
                     value={state.marginLeft}
-                    onChange={(e) => dispatch({type: 'marginLeft', payload: e.target.value})}
+                    onChange={(e) => setProperty('marginLeft', parseInt(e.target.value))}
                     type='number'
                 />
             </div>
         </div>
     );
-})
-const Shadow = React.memo(({state, dispatch}: {state: State; dispatch: React.Dispatch<Action>}) => {
-    const [shadow, setShadow] = useState(state.textShadow === 'none' ? ['0', '0', '0', '#000000'] : state.textShadow);
+});
+const Shadow = React.memo(() => {
+    const {state, setProperty} = useNoteStore();
+    const [shadow, setShadow] = useState<'none' | [string, string, string, string]>(
+        state.textShadow === 'none' ? ['0', '0', '0', '#000000'] : state.textShadow
+    );
     useEffect(() => {
-        dispatch({type: 'textShadow', payload: shadow});
+        setProperty('textShadow', shadow);
     }, [shadow]);
     return (
         <div>
             <h3 className='w-full my-2 border border-transparent border-b-[#00000022] dark:border-b-[#ffffff22]'>
-                Shadow
+                {t('shadow')}
             </h3>
-            <button onClick={() => dispatch({type: 'textShadow', payload: 'none'})}>Unset</button>
+            <button onClick={() => setProperty('textShadow', 'none')}>Unset</button>
             <div className='flex flex-row items-center justify-around w-full mb-2'>
                 <TbAxisX className='w-4 -mr-5' />
                 <input
                     className='w-1/4 rounded-md border border-[#00000044] bg-inherit outline-none'
                     value={shadow[0]}
-                    onChange={(e) =>setShadow([e.target.value, shadow[1], shadow[2], shadow[3]])}
+                    onChange={(e) => setShadow([e.target.value, shadow[1], shadow[2], shadow[3]])}
                     type='number'
                 />
                 <TbAxisY className='w-4 -mr-5' />
@@ -286,39 +298,27 @@ const Shadow = React.memo(({state, dispatch}: {state: State; dispatch: React.Dis
                 <input
                     className='w-1/4 rounded-md border border-[#00000044] bg-inherit outline-none'
                     value={shadow[2]}
-                    onChange={(e) => setShadow([shadow[0],shadow[1], e.target.value,shadow[3]])}
+                    onChange={(e) => setShadow([shadow[0], shadow[1], e.target.value, shadow[3]])}
                     type='number'
                 />
                 <IoMdColorFill className='w-4 -mr-5' />
                 <input
                     className='w-1/4 rounded-md border border-[#00000044] bg-inherit outline-none'
                     value={state.textShadow[3]}
-                    onChange={(e) => setShadow([shadow[0], shadow[1],shadow[2], e.target.value])}
+                    onChange={(e) => setShadow([shadow[0], shadow[1], shadow[2], e.target.value])}
                     type='color'
                 />
             </div>
         </div>
     );
-})
-export default function Edit({state, dispatch}: {state: State; dispatch: React.Dispatch<Action>}) {
+});
+export default function Edit() {
     return (
-        <div className='flex flex-col items-start justify-start w-48 gap-5 py-5 text-lg bg-asidebg dark:bg-darkasidebg h-screen overflow-y-scroll scroll-smooth'>
-            <Font
-                state={state}
-                dispatch={dispatch}
-            />
-            <Text
-                state={state}
-                dispatch={dispatch}
-            />
-            <Shadow
-                state={state}
-                dispatch={dispatch}
-            />
-            <Paper
-                state={state}
-                dispatch={dispatch}
-            />
+        <div className='flex flex-col items-start justify-start w-48 h-screen gap-5 py-5 overflow-x-hidden overflow-y-scroll text-lg bg-asidebg dark:bg-darkasidebg scroll-smooth'>
+            <Font />
+            <Text />
+            <Shadow />
+            <Paper />
         </div>
     );
 }

@@ -1,5 +1,4 @@
 import React, {useState, Suspense} from 'react';
-import {AiOutlineLoading3Quarters} from 'react-icons/ai';
 import LoadingShort from '../LoadingShort';
 
 const LazySiNotepadplusplus = React.lazy(() =>
@@ -56,16 +55,12 @@ const icons = {
 
 export default function Icon({
     form,
-    color,
-    backgroundColor,
 }: {
     form: any;
-    color: string;
-    backgroundColor: string;
 }) {
     const [hid, setHid] = useState<boolean>(true);
     return (
-        <div className={`text-${color}`}>
+        <div >
             <div
                 className='h-full w-14 cursor-pointer text-4xl'
                 onClick={() => setHid(!hid)}>
@@ -99,7 +94,7 @@ export default function Icon({
 
 export function SendIcon({icon}: {icon: string}) {
     return (
-        <div className='text-asideIcon self-center text-4xl *:m-0 *:p-0'>
+        <div className='text-asideIcon self-center text-3xl *:m-0 *:p-0'>
             <Suspense fallback={<LoadingShort />}>
                 {React.createElement(icons[icon as IconId])}
             </Suspense>

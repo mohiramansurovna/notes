@@ -48,5 +48,6 @@ model Note {
   text        String
   title       String
   icon        String
+  stickers    Json
   user        User     @relation("UserNotes", fields: [userId], references: [id], onDelete: Cascade)
 }

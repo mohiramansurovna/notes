@@ -4,6 +4,6 @@ import { MdOutlineErrorOutline } from 'react-icons/md'
 
 export default function ErrorComponent({error}: {error:string}) {
   return (
-    <div className='absolute-center  p-5 border rounded-lg bg-asidebg border-asideIcon text-3xl text-text flex flex-col justify-around items-center'><MdOutlineErrorOutline/>{error}<Link href='/dashboard' className='text-sm underline pt-2'>back to dashboard</Link></div>
+    <div className='flex flex-col items-center justify-around p-5 text-3xl border rounded-lg absolute-center bg-asidebg border-asideIcon'><MdOutlineErrorOutline/>{error}<Link href='/dashboard' className='pt-2 text-sm underline'>back to dashboard</Link></div>
   )
 }

@@ -21,6 +21,7 @@ import {Providers} from '../providers';
 import I18nProvider from '@/components/I18nProvider';
 import {Suspense} from 'react';
 import Loading from '@/components/Loading';
+import GlobalSettingsProvider from '@/components/GlobalSettingsProvider';
 
 const quicksand = Quicksand({
     subsets: ['latin'],
@@ -113,12 +114,15 @@ export default function RootLayout({
                     href='https://fonts.gstatic.com'
                 />
             </head>
-            <body className='w-screen h-screen p-0 m-0 overflow-x-hidden dark:bg-[#181818] font-sans'>
+            <body className='w-screen h-screen p-0 m-0 overflow-x-hidden bg-slate-50 dark:bg-[#181818] font-sans'>
                 <I18nProvider>
                     <Suspense fallback={<Loading />}>
                         <EdgeStoreProvider basePath='/api/edgestore'>
                             <SessionProvider>
-                                <Providers>{children}</Providers>
+                                <Providers>
+                                    <GlobalSettingsProvider />
+                                    {children}
+                                </Providers>
                             </SessionProvider>
                         </EdgeStoreProvider>
                     </Suspense>

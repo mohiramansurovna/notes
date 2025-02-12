@@ -13,8 +13,8 @@ import {AppRouterInstance} from 'next/dist/shared/lib/app-router-context.shared-
 import Socials from './Socials';
 
 export default function SignUp({router}: {router: AppRouterInstance}) {
-    const [error, setError] = useState<string>();
-    const [success, setSuccess] = useState<string>();
+    const [error, setError] = useState<number>();
+    const [success, setSuccess] = useState<number>();
     const [isPending, startTransition] = useTransition();
 
     const form = useForm<z.infer<typeof RegisterSchema>>({
@@ -26,12 +26,12 @@ export default function SignUp({router}: {router: AppRouterInstance}) {
         },
     });
     const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-        setError('')
-        setSuccess('')
+        setError(0);
+        setSuccess(0);
         startTransition(() => {
             setError(undefined);
             setSuccess(undefined);
-            register(values).then((res: {error?: string; success?: string}) => {
+            register(values).then((res: {error?: number; success?: number}) => {
                 if (res.error) {
                     setError(res.error);
                     form.reset();
@@ -96,8 +96,8 @@ export default function SignUp({router}: {router: AppRouterInstance}) {
                         type='password'
                         {...form.register('password')}
                     />
-                    {error && <Error error={error} />}
-                    {success && <Success success={success} />}
+                    <Error error={error} />
+                    <Success success={success} />
                     <div className='flex flex-row justify-between mt-10'>
                         <Link
                             href='/auth/'
@@ -110,7 +110,10 @@ export default function SignUp({router}: {router: AppRouterInstance}) {
                             Register
                         </button>
                     </div>
-                    <Socials color='#65558F' signIn={false} />
+                    <Socials
+                        color='#65558F'
+                        signIn={false}
+                    />
                     <Link
                         href='/auth/login'
                         className='mt-4 text-center hover:underline underline-offset-4 outline-none'>

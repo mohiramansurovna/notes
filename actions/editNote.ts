@@ -1,15 +1,15 @@
 'use server'
 
-import { State } from "@/types"
+import { State, Sticker } from "@/types"
 import { db } from "@/lib/db"
 import { NoteSchema } from "@/schemas"
 import { z } from "zod"
 
-export default async function editNote(values:z.infer<typeof NoteSchema>,state:State, id:string){
+export default async function editNote(values:z.infer<typeof NoteSchema>,state:State, id:string, stickers:Sticker[]){
     let jsonState=JSON.stringify(state);
-
+    let stickerJson=JSON.stringify(stickers)
     const formValues=NoteSchema.safeParse(values)
-    if(!formValues.success)return {error:'Invalid saving values'}
+    if(!formValues.success)return {error:2}
     const {title,text,icon}=formValues.data
     try{
         await db.note.update({
@@ -20,13 +20,14 @@ export default async function editNote(values:z.infer<typeof NoteSchema>,state:S
                 edits:jsonState,
                 text,
                 title,
-                icon
+                icon,
+                stickers:stickerJson
             }
         })
-        return {success:'Note saved successfully'}
+        return {success:1}
     }catch(err){
         console.log(err)
-        return {error:'Error saving note'}
+        return {error:2}
     }
 
 }

@@ -8,10 +8,13 @@ import {SendIcon} from './Icon';
 import {useDebounce} from '@/hooks/useDebounce';
 import {getUserNotes} from '@/lib/notes';
 import ThemeSwitch from '../ThemeSwitch';
-import { LuDelete } from 'react-icons/lu';
-import { IoSettingsOutline,IoMenuOutline } from 'react-icons/io5';
-import { IoIosLogOut  } from 'react-icons/io';
+import {LuDelete} from 'react-icons/lu';
+import {IoSettingsOutline, IoMenuOutline} from 'react-icons/io5';
+import {IoIosLogOut} from 'react-icons/io';
 import {LuPencil} from 'react-icons/lu';
+import {useTranslation} from 'react-i18next';
+import {t} from 'i18next';
+import {LuLayoutDashboard} from 'react-icons/lu';
 
 const ProfileSection = memo(({long, user}: {long: boolean; user: any}) => {
     return (
@@ -38,23 +41,23 @@ const ProfileSection = memo(({long, user}: {long: boolean; user: any}) => {
                 </h3>
             )}
             <div
-                className={`absolute bottom-0 left-0 -z-10 hidden h-36 w-${
-                    long ? '36' : 'full'
-                } flex-col items-start justify-start overflow-clip text-nowrap rounded-md bg-activebg dark:bg-darkactivebg text-lg hover:flex peer-hover:flex`}>
+                className={`absolute -bottom-2 left-0 -z-10 hidden h-36 w-${
+                    long ? '44' : 'full'
+                } flex-col items-start justify-start overflow-clip text-nowrap rounded-md bg-main dark:bg-darkmain text-lg hover:flex peer-hover:flex`}>
                 <Link
                     href='/dashboard/settings'
-                    className='flex flex-row items-center justify-start w-full gap-2 pt-2 pl-8 h-1/3 rounded-t-md hover:bg-primarybg dark:hover:bg-darkprimarybg'>
+                    className='flex flex-row items-center justify-start w-full gap-2 p-1 pt-2 pl-8 h-1/3 rounded-t-md hover:bg-primarybg dark:hover:bg-darkprimarybg'>
                     <IoSettingsOutline />
-                    Settings
+                    {t('settings')}
                 </Link>
                 <button
                     onClick={async () => await signOut({redirectTo: '/'})}
-                    className='flex flex-row items-center justify-start w-full gap-2 pb-1 pl-8 h-1/3 rounded-b-md hover:bg-primarybg dark:hover:bg-darkprimarybg'>
+                    className='flex flex-row items-center justify-start w-full gap-2 p-1 pb-1 pl-8 h-1/3 hover:bg-primarybg dark:hover:bg-darkprimarybg'>
                     <IoIosLogOut />
-                    Sign Out
+                    {t('logout')}
                 </button>
                 {long && (
-                    <h3 className='w-24 py-2 pr-2 ml-12 font-semibold text-right text-primarytext dark:text-darkprimarytext h-1/3 overflow-clip text-ellipsis'>
+                    <h3 className='w-24 py-2 pr-2 ml-12 font-semibold text-center text-primarytext dark:text-darkprimarytext h-1/3 overflow-clip text-ellipsis'>
                         {user.name}
                     </h3>
                 )}
@@ -65,7 +68,8 @@ const ProfileSection = memo(({long, user}: {long: boolean; user: any}) => {
 export default function SideBar() {
     //data_________________________________________________________________________
     const user = useCurrentUser();
-    const session=useSession()
+    const {t} = useTranslation();
+    const session = useSession();
     const [notes, setNotes] = useState<{id: string; icon: string; title: string}[]>();
     useEffect(() => {
         if (!user?.id) return;
@@ -76,7 +80,7 @@ export default function SideBar() {
     }, [user]);
     const handleDeleteNote = useCallback(async (noteId: string) => {
         await deleteNote(noteId);
-        session.update()
+        session.update();
     }, []);
 
     //ui___________________________________________________________________________
@@ -101,54 +105,74 @@ export default function SideBar() {
             <aside
                 className={`${
                     long ? 'w-16' : 'w-52'
-                } fixed z-10 flex h-full flex-col justify-between bg-asidebg py-4 shadow-lg shadow-shadow dark:bg-darkasidebg dark:shadow-darkshadow
+                } fixed z-10 flex h-full flex-col justify-between bg-asidebg py-4 shadow-lg dark:bg-darkasidebg
                  transition-all duration-100`}
                 ref={asideRef}>
-                <section className='flex flex-col justify-center w-full px-2 align-middle h-1/4'>
-                    <ThemeSwitch/>
-                    <IoMenuOutline size={25} onClick={()=>{setLong(!long)}} className='m-3 text-icon dark:text-darkicon'/>
+                <section className='flex flex-col justify-center w-full px-2 align-middle h-1/3'>
+                    <ThemeSwitch />
+                    <IoMenuOutline
+                        size={25}
+                        onClick={() => {
+                            setLong(!long);
+                        }}
+                        className='m-3'
+                    />
+                    <Link
+                        href='/dashboard/'
+                        className={`${
+                            long ? 'w-[50px]' : 'flex flex-row w-full'
+                        } h-[50px] items-center mb-4 justify-between rounded-2xl `}>
+                        {!long && (
+                            <p className='m-3 font-medium text-center text-fit'>{t('dashboard')}</p>
+                        )}
+                        <LuLayoutDashboard
+                            size={20}
+                            className='m-3'
+                        />
+                    </Link>
                     <Link
                         href='/dashboard/note/create'
                         className={`${
                             long ? 'w-[50px]' : 'flex flex-row w-full'
-                        } h-[50px] items-center justify-between rounded-2xl bg-activebg dark:bg-darkactivebg`}>
+                        } h-[50px] items-center justify-between rounded-2xl bg-main dark:bg-darkmain`}>
                         {!long && (
-                            <p className='m-3 font-medium text-center text-text dark:text-darktext text-fit'>
-                                New Note
-                            </p>
+                            <p className='m-3 font-medium text-center text-fit'>{t('newNote')}</p>
                         )}
-                        <LuPencil size={20} className='m-4 text-icon dark:text-darkicon'/>
+                        <LuPencil
+                            size={20}
+                            className='m-4'
+                        />
                     </Link>
                 </section>
-                <hr className='h-[.2px] border-none bg-icon dark:bg-darkicon' />
+                <hr className='border-main dark:border-darkmain -my-8 h-1 w-full' />
                 <section
-                    className={`${
-                        long ? '' : 'gap-0 mt-[47px]'
-                    } flex min-h-[50vh] flex-col justify-start gap-4`}>
-                    {notes?(
+                 className={`${
+                        long ? '' : 'gap-0'
+                    } flex flex-col justify-start gap-4 h-1/2 overflow-y-scroll scrollbar-hide`}>
+                    {notes ? (
                         notes.map((note) => {
                             return (
                                 <div
                                     key={note.id}
-                                    className='flex flex-row w-full'>
+                                    className='flex flex-row w-full h-15'>
                                     <Link
                                         href={`/dashboard/note/${note.id}`}
                                         className={`${
                                             long
                                                 ? 'flex-col w-full justify-center align-middle'
                                                 : 'flex-row w-[176px] -mr-[18px] justify-start items-start p-3 rounded-r-full z-10'
-                                        } flex gap-1 overflow-clip hover:bg-activebg dark:hover:bg-darkactivebg`}>
+                                        } flex overflow-clip hover:bg-activebg dark:hover:text-darkbg`}>
                                         <SendIcon icon={note.icon} />
-                                        <p className='w-full h-full pt-1 mx-1 font-medium duration-100 text-center textdot'>
+                                        <p className={`w-full h-full pt-1 mx-1 font-medium text-center duration-100 textdot`}>
                                             {note.title}
                                         </p>
                                     </Link>
                                     {!long && (
-                                        <div className='text-lg rounded-l-full overflow-clip text-nowrap hover:bg-activebg dark:hover:bg-darkactivebg'>
+                                        <div className='text-lg rounded-l-full overflow-clip text-nowrap hover:bg-activebg dark:hover:text-darkbg'>
                                             <button
                                                 onClick={() => handleDeleteNote(note.id)}
-                                                className='w-full h-full pl-5 text-xl text-icon dark:text-darkicon'>
-                                                <LuDelete className='m-1'/>
+                                                className='w-full h-full pl-5 text-xl'>
+                                                <LuDelete className='m-1' />
                                             </button>
                                         </div>
                                     )}
@@ -156,7 +180,7 @@ export default function SideBar() {
                             );
                         })
                     ) : (
-                        <div className='w-full h-full px-1 pt-20 text-text dark:text-darktext'>loading, please wait :)</div>
+                        <div className='w-full h-full px-1 pt-20'>loading, please wait :)</div>
                     )}
                 </section>
                 <ProfileSection

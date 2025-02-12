@@ -13,8 +13,8 @@ import {useTransition} from 'react';
 import {AppRouterInstance} from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import Socials from './Socials';
 export function SignIn({router}: {router: AppRouterInstance}) {
-    const [success, setSuccess] = useState<string>();
-    const [error, setError] = useState<string>();
+    const [success, setSuccess] = useState<number>();
+    const [error, setError] = useState<number>();
     const [isPending, startTransition] = useTransition();
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
@@ -24,8 +24,8 @@ export function SignIn({router}: {router: AppRouterInstance}) {
         },
     });
     const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-        setError('')
-        setSuccess('')
+        setError(0)
+        setSuccess(0)
         startTransition(() => {
             login(values).then((res) => {
                 if (res.error) {
@@ -104,8 +104,8 @@ export function SignIn({router}: {router: AppRouterInstance}) {
                         type='password'
                         {...form.register('password')}
                     />
-                    {error && <Error error={error} />}
-                    {success && <Success success={success} />}
+                    <Error error={error} />
+                    <Success success={success} />
                     <div className='flex flex-row justify-between mt-10'>
                         <Link
                             href='/auth/'

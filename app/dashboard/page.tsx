@@ -1,41 +1,24 @@
 'use client';
 import useCurrentUser from '@/hooks/useCurrentUser';
-import {useRouter} from 'next/navigation';
-import {useEffect} from 'react';
 import SideBar from '@/components/EditorComponents/SideBar';
-import {useTheme} from 'next-themes';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import {useTranslation} from 'react-i18next';
+import Notes from '@/components/DashboardComponents/Notes';
+import Templates from '@/components/DashboardComponents/Templates';
 
 export default function page() {
     const user = useCurrentUser();
-    const router = useRouter();
-    const {setTheme} = useTheme();
-    const {t, i18n} = useTranslation();
-    useEffect(() => {
-        if (!user) {
-            router.push('/auth/login');
-        }
-        if (user?.mode) {
-            setTheme(user.mode);
-        }
-        if (user?.theme) {
-            document.documentElement.style.setProperty('--active', `var(--${user.theme})`);
-            document.documentElement.style.setProperty('--shadow', `var(--${user.theme}sh)`);
-        }
-        if (user?.font) {
-            document.documentElement.style.setProperty('--font', `${user.font}px`);
-        }
-        if (user?.language) {
-            i18n.changeLanguage(user.language);
-        }
-    }, [user]);
-
+    const {t} = useTranslation();
     return (
-        user && (
+        user?.id && (
             <>
                 <SideBar />
-                <h1 className='absolute-center'>{t('welcome')}</h1>
+                <main className='flex flex-col items-start justify-start w-full px-44 h-full gap-4 p-5 text-lg'>
+                    <h1 className='w-full text-start font-semibold'><span className='text-shadow font-bold'>T</span>emplate<span className='text-shadow font-bold'>s</span></h1>
+                    <Templates/>
+                    <h1 className='w-full text-start font-semibold'><span className='text-shadow font-bold'>Y</span>our Note<span className='text-shadow font-bold'>s</span></h1>
+                    <Notes userId={user.id} />
+                </main>
             </>
         )
     );

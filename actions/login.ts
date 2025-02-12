@@ -7,12 +7,12 @@ import {signIn} from '@/auth';
 import {AuthError} from 'next-auth';
 export default async function login(values: z.infer<typeof LoginSchema>) {
     const verifications = LoginSchema.safeParse(values);
-    if (!verifications.success) return {error: 'Invalid credentials'};
+    if (!verifications.success) return {error: 3};
     const {email, password} = verifications.data;
     const user = await getUserByEmail(email);
-    if (!user || !user.password) return {error: 'User not found'};
+    if (!user || !user.password) return {error: 7};
     const passwordMatch = await bcryptjs.compare(password, user.password);
-    if (!passwordMatch) return {error: 'Invalid password'};
+    if (!passwordMatch) return {error: 6};
 
     try {
         await signIn('credentials', {
@@ -20,12 +20,12 @@ export default async function login(values: z.infer<typeof LoginSchema>) {
             password,
             redirect: false,
         });
-        return {success: 'Signed in'};
+        return {success: 5};
     } catch (error) {
         if (error instanceof AuthError && error.type === 'CredentialsSignin') {
-            return {error: 'Invalid credentials'};
+            return {error: 3};
         } else {
-            return {error: 'Something went wrong'};
+            return {error: 8};
         }
     }
 }

@@ -5,10 +5,10 @@ import {useTranslation} from 'react-i18next';
 export default function Loading() {
     const {t} = useTranslation();
     return (
-        <div className='absolute-center flex flex-col items-center'>
+        <div className='flex flex-col items-center justify-center w-full h-full bg-gray-50  dark:bg-darkbg absolute-center'>
             <AiOutlineLoading3Quarters
                 size={30}
-                className='animate-spin'
+                className='animate-spin text-shadow'
             />
             <p>{t('loading')}</p>
         </div>

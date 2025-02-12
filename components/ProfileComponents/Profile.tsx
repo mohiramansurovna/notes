@@ -14,9 +14,16 @@ import useImageUrl from '@/hooks/useImageUrl';
 import {ProfileImage} from '@/types';
 import {useSession} from 'next-auth/react';
 import {User} from '@prisma/client';
-export default function Profile({user}: {user: User; router: AppRouterInstance}) {
-    const [error, setError] = useState<string>();
-    const [success, setSuccess] = useState<string>();
+import {useTranslation} from 'react-i18next';
+export default function Profile({
+    user,
+    color,
+}: {
+    user: User;
+    color: '#600bd5' | '#01ff88' | '#ffff33' | '#fc2f00' | '#ec7d10' | '#ec0868';
+}) {
+    const [error, setError] = useState<number>();
+    const [success, setSuccess] = useState<number>();
     const [isPending, startTransition] = useTransition();
     const [imageUrl, setImageUrl] = useState<{url: string; miniUrl: string | null}>({
         url: user.imageUrl as string,
@@ -25,7 +32,7 @@ export default function Profile({user}: {user: User; router: AppRouterInstance})
     const [file, setFile] = useState<File | null>(null);
     const [progress, setProgress] = useState<number>(0);
     const session = useSession();
-
+    const {t} = useTranslation();
     //uploading the image
     const getImageUrl = useImageUrl(setProgress, user.imageUrl);
 
@@ -35,18 +42,22 @@ export default function Profile({user}: {user: User; router: AppRouterInstance})
             if (res.status === 200) {
                 setImageUrl({url: res.url, miniUrl: res.miniUrl});
             } else {
-                setError('Error uploading image');
+                setError(4);
             }
         });
     };
     useEffect(() => {
-        imageUpload();
+        startTransition(() => {
+            setError(0);
+            setSuccess(0);
+            imageUpload();
+        });
     }, [file]);
 
     //submitting the form
     const onSubmit = (values: z.infer<typeof EditProfileSchema>) => {
-        setError('');
-        setSuccess('');
+        setError(0);
+        setSuccess(0);
         const send = file ? imageUrl : null;
         startTransition(() => {
             //there will be edit profile action
@@ -77,63 +88,63 @@ export default function Profile({user}: {user: User; router: AppRouterInstance})
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 autoComplete='off'
-                className='flex flex-row justify-around items-center h-screen w-full '>
+                className='flex flex-row items-center justify-around w-full h-screen '>
                 <fieldset
                     disabled={isPending}
-                    className='flex flex-col justify-start align-middle w-1/2 h-3/4 -translate-y-12 disabled:opacity-40 transition-opacity duration-75'>
-                    <h2 className='w-full mt-12 text-3xl font-semibold'>Profile Data</h2>
+                    className='flex flex-col justify-start w-1/2 align-middle transition-opacity duration-75 -translate-y-12 h-3/4 disabled:opacity-40'>
+                    <h2 className='w-full mt-12 text-3xl font-semibold'>{t('profile')}</h2>
                     <label
                         htmlFor='name'
-                        className='mt-10 pl-2 font-semibold text-lg'>
-                        Name
+                        className='pl-2 mt-10 text-lg font-semibold'>
+                        {t('name')}
                     </label>
                     <input
-                        className='rounded-md px-2 py-1 mt-1 outline-darkshadow  border border-darkshadow'
+                        className={`rounded-md px-2 py-1 mt-1 outline-[${color}]  border border-[${color}]`}
                         id='name'
                         type='text'
                         {...form.register('name')}
                     />
                     <label
                         htmlFor='password'
-                        className='mt-4 pl-2 font-semibold text-lg'>
-                        Current Password
+                        className='pl-2 mt-4 text-lg font-semibold'>
+                        {t('currentPassword')}
                     </label>
                     <input
-                        className='rounded-md px-2 py-1 mt-1 outline-darkshadow  border border-darkshadow'
+                        className={`rounded-md px-2 py-1 mt-1 outline-[${color}]  border border-[${color}]`}
                         id='password'
                         type='password'
                         {...form.register('password')}
                     />
                     <label
                         htmlFor='newPassword'
-                        className='mt-4 pl-2  font-semibold text-lg'>
-                        New Password
+                        className='pl-2 mt-4 text-lg font-semibold'>
+                        {t('newPassword')}
                     </label>
                     <input
-                        className='rounded-md px-2 py-1 mt-1 outline-darkshadow border border-darkshadow'
+                        className={`rounded-md px-2 py-1 mt-1 outline-[${color}] border border-[${color}]`}
                         id='newPassword'
                         type='password'
                         {...form.register('newPassword')}
                     />
                     <label
                         htmlFor='confirmPassword'
-                        className='mt-4 pl-2  font-semibold text-lg'>
-                        Confirm Password
+                        className='pl-2 mt-4 text-lg font-semibold'>
+                        {t('confirmPassword')}
                     </label>
                     <input
-                        className='rounded-md px-2 py-1 mt-1 outline-darkshadow border border-darkshadow'
+                        className={`rounded-md px-2 py-1 mt-1 outline-[${color}] border border-[${color}]`}
                         id='confirmPassword'
                         type='password'
                         {...form.register('confirmPassword')}
                     />
-                    {error && <Error error={error} />}
-                    {success && <Success success={success} />}
+                    <Error error={error} />
+                    <Success success={success} />
                     <div className='flex flex-row justify-end mt-10'>
                         <button
                             type='submit'
-                        className='px-12 py-1 bg-darkactivebg border border-darkactivebg rounded-md font-normal text-white hover:bg-darkactivebg outline-none mt-3 w-1/3'>
-                        Save
-                    </button>
+                            className={`px-12 py-1 border border-[${color}] rounded-md font-normal outline-none mt-3 w-1/3`}>
+                            {t('save')}
+                        </button>
                     </div>
                 </fieldset>
                 <div className='z-10'>
@@ -143,8 +154,8 @@ export default function Profile({user}: {user: User; router: AppRouterInstance})
                     <label
                         htmlFor='inputImage'
                         className='absolute w-[200px] h-[200px] rounded-full translate-y-4 translate-x-3 z-20 hover:bg-[#00000099] bg-transparent *:hover:text-white  flex flex-col justify-center align-middle pl-4'>
-                        <FaPen className='text-transparent text-2xl w-full text-center' />
-                        <p className='text-transparent text-xl w-full'>Edit profile image</p>
+                        <FaPen className='w-full text-2xl text-center text-transparent' />
+                        <p className='w-full text-xl text-transparent'>{t('editProfileImage')}</p>
                         <input
                             type='file'
                             id='inputImage'
@@ -152,22 +163,27 @@ export default function Profile({user}: {user: User; router: AppRouterInstance})
                             accept='image/*'
                             onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
                         />
-                        <div className='w-full h-[6px] bg-transparent border border-darkshadow translate-y-32 rounded-xl'>
+                        <div
+                            className={`w-full h-[6px] bg-transparent border border-[${color}] translate-y-32 rounded-xl`}>
                             <div
-                                className='h-full bg-darkshadow transition-all duration-150'
-                                style={{width: `${progress}%`}}></div>
+                                className='h-full transition-all duration-150'
+                                style={{width: `${progress}%`, backgroundColor: color}}></div>
                         </div>
                     </label>
                     <img
                         alt='alt image'
                         className='w-[200px] h-[200px] rounded-full z-10 translate-y-4 translate-x-3 object-cover object-center'
                         src={
-                            imageUrl ? imageUrl.url : user.imageUrl ? user.imageUrl : '/avatar.jpg'
+                            imageUrl.url
+                                ? imageUrl.url
+                                : user.imageUrl
+                                ? user.imageUrl
+                                : '/avatar.jpg'
                         }
                     />
                     <h3
                         aria-disabled={isPending}
-                        className='text-center font-semibold text-2xl z-10 translate-y-5 disabled:opacity-10 disabled:blur-md'>
+                        className='z-10 text-2xl font-semibold text-center translate-y-5 disabled:opacity-10 disabled:blur-md'>
                         {user.name}
                     </h3>
                 </div>

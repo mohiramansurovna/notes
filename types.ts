@@ -1,3 +1,5 @@
+import { StaticImageData } from "next/image";
+
 export type Fonts =
     | 'akronim'
     | 'alkatra'
@@ -12,13 +14,21 @@ export type Fonts =
     | 'ntr'
     | 'offside'
     | 'oregano'
-    | 'sans'
-
+    | 'sans';
 
 export type State = {
     color: string;
     backgroundColor: string;
-    fontWeight: 'thin'|'extralight' | 'light' | 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold' | 'black';
+    fontWeight:
+        | 'thin'
+        | 'extralight'
+        | 'light'
+        | 'normal'
+        | 'medium'
+        | 'semibold'
+        | 'bold'
+        | 'extrabold'
+        | 'black';
     fontSize: string;
     fontStyle: 'normal' | 'italic';
     fontFamily: Fonts;
@@ -27,31 +37,26 @@ export type State = {
     letterSpacing: number;
     lineHeight: number | 'inherit';
     textAlign: 'left' | 'right' | 'center' | 'justify';
-    textShadow: [string, string, string,string]|'none';
+    textShadow: [string, string, string, string] | 'none';
     marginLeft: number;
     marginTop: number;
 };
-export type Action = {
-    type:
-        | 'color'//
-        | 'backgroundColor'//
-        | 'fontWeight'//
-        | 'fontSize'//
-        | 'fontStyle'//
-        | 'fontFamily'//
-        | 'textDecoration'//
-        | 'textTransform'//
-        | 'letterSpacing'//
-        | 'lineHeight'//
-        | 'textAlign'//
-        | 'textShadow'//
-        | 'marginLeft'//
-        | 'marginTop'//
-        | 'init';//
-    payload: string | number | State| string[];
+
+export type Sticker = {
+    name: string;
+    src: StaticImageData;
+    position: {x: number; y: number};
+    size: {width: number; height: number};
+};
+export type Note = {
+    state: State;
+    title: string;
+    text: string;
+    createdDate: string;
+    icon: string;
+    stickers: Sticker[];
 };
 export type ProfileImage = {
     url: string;
     miniUrl: string | null;
 };
-

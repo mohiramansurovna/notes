@@ -1,44 +1,38 @@
 import {darkColors, lightColors} from '@/Edits';
-import {Action, State} from '@/types';
+import {useNoteStore} from '@/store/note';
 import {useTheme} from 'next-themes';
 import React from 'react';
+import {useTranslation} from 'react-i18next';
 
-function ColorText({
-    state,
-    dispatch,
-}: {
-    state: State;
-    dispatch: React.Dispatch<Action>;
-}) {
+function ColorText() {
+    const {state, setProperty} = useNoteStore();
     const {resolvedTheme} = useTheme();
+    const {t} = useTranslation();
     return (
-        <div className='py-5 text-lg w-48 bg-asidebg h-screen overflow-y-scroll dark:bg-darkasidebg '>
-            <label className='flex flex-row justify-around w-full items-center'>
-                Chose here
+        <div className='w-48 h-screen py-5 overflow-y-scroll text-lg bg-asidebg dark:bg-darkasidebg '>
+            <label className='flex flex-row items-center justify-around w-full'>
+                {t('chooseHere')}
                 <input
                     className='w-12 h-12 p-0 m-0 border border-[#171717] outline outline-[#171717] -outline-offset-4 outline-4 rounded-full'
                     type='color'
                     value={state.color}
                     onChange={(e) => {
-                        dispatch({type: 'color', payload: e.target.value});
+                        setProperty('color', e.target.value);
                     }}
                 />
             </label>
-            {
-                (resolvedTheme==='dark'?lightColors:darkColors).map((each, index: number) => {
-                    return (
-                        <button
-                            key={index}
-                            onClick={() => {
-                                dispatch({type: 'color', payload: each.hex});
-                            }}
-                            className={`w-full h-12 relative add-after border border-white hover:border-white`}
-                            style={{backgroundColor: each.hex}}
-                            data-text={each.name}>
-                        </button>
-                    );
-                })
-            }
+            {(resolvedTheme === 'dark' ? lightColors : darkColors).map((each, index: number) => {
+                return (
+                    <button
+                        key={index}
+                        onClick={() => {
+                            setProperty('color', each.hex);
+                        }}
+                        className={`w-full h-12 relative add-after border border-white hover:border-white`}
+                        style={{backgroundColor: each.hex}}
+                        data-text={each.name}></button>
+                );
+            })}
         </div>
     );
 }

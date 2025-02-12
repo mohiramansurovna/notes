@@ -38,8 +38,8 @@ export default async function editUIPreferences(
             where: {id: user?.id},
             data,
         });
-        return {success: 'UI preferences updated successfully'};
+        return {success: 4};
     } catch {
-        return {error: 'Something went wrong with updating the preferences'};
+        return {error: 9};
     }
 }
