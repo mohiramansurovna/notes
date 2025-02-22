@@ -13,30 +13,17 @@ import {useSession} from 'next-auth/react';
 import Error from '@/components/Error';
 import Success from '@/components/Success';
 import {useSearchParams} from 'next/navigation';
-import {useNoteStore} from '@/store/note';
+import {useNoteStore} from '@/zustand-store/note';
 import {templates} from '../DashboardComponents/Templates';
 import {Rnd} from 'react-rnd';
 import Image, {StaticImageData} from 'next/image';
-import { Sticker } from '@/types';
+import {Sticker} from '@/types';
+import {TiDelete} from 'react-icons/ti';
+import StickerBoard from './StickerBoard';
 const BiSolidSave = dynamic(() => import('react-icons/bi').then((mod) => mod.BiSolidSave));
 const AiOutlineFullscreen = dynamic(() =>
     import('react-icons/ai').then((mod) => mod.AiOutlineFullscreen)
 );
-
-type CurrenStickers = {
-    [index: number]: {
-        size: {
-            width: number;
-            height: number;
-        };
-        position: {
-            x: number;
-            y: number;
-        };
-        src: StaticImageData;
-        name: string;
-    };
-};
 
 function PreNewNote({router}: {router: AppRouterInstance}) {
     const userId = useCurrentUserId();
@@ -45,8 +32,6 @@ function PreNewNote({router}: {router: AppRouterInstance}) {
     const [success, setSuccess] = useState<number>();
     const {state, setInitialState, stickers} = useNoteStore();
     const [dragging, setDragging] = useState(false);
-
-    const [currentSticker, setCurrentSticker] = useState<CurrenStickers>({});
     const form = useForm<z.infer<typeof NoteSchema>>({
         resolver: zodResolver(NoteSchema),
         defaultValues: {
@@ -55,7 +40,7 @@ function PreNewNote({router}: {router: AppRouterInstance}) {
             icon: '0',
         },
     });
-    const templateId = useSearchParams().get('template');
+    const templateId = useSearchParams()?.get('template') ?? '0';
     useEffect(() => {
         if (!templateId) return;
         const ids = parseInt(templateId);
@@ -65,27 +50,15 @@ function PreNewNote({router}: {router: AppRouterInstance}) {
             text: templates[ids].text,
             createdDate: 'now',
             icon: '0',
-            stickers: [],
+            stickers: {},
         });
     }, [templateId]);
-    useEffect(() => {
-        //loading the stickers into currentSticker
-        let current: CurrenStickers = {};
-        stickers.map((sticker, index: number) => {
-            current[index] = {
-                position: {x: sticker.position.x, y: sticker.position.y},
-                size: {width: sticker.size.width, height: sticker.size.height},
-                src: sticker.src,
-                name: sticker.name,
-            };
-        });
-        setCurrentSticker(current);
-    }, [stickers]);
+
     const onSubmit = (values: z.infer<typeof NoteSchema>) => {
         if (!userId) return;
         setError(0);
         setSuccess(0);
-        createNote(values, state, userId, Object.values(currentSticker) as Sticker[]).then((res) => {
+        createNote(values, state, userId, stickers).then((res) => {
             if (res.error) {
                 setError(res.error);
             } else {
@@ -148,8 +121,8 @@ function PreNewNote({router}: {router: AppRouterInstance}) {
     return (
         <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className='absolute left-1/2 top-1/2 z-0 h-full w-5/6 -translate-x-1/2 -translate-y-1/2 py-10'>
-            <div className='flex w-full flex-row items-center justify-end'>
+            className='absolute z-0 w-5/6 h-full py-10 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2'>
+            <div className='flex flex-row items-center justify-end w-full'>
                 <button
                     type='button'
                     onClick={toggleFullScreen}
@@ -162,12 +135,12 @@ function PreNewNote({router}: {router: AppRouterInstance}) {
                     <BiSolidSave />
                 </button>
             </div>
-            <div className='flex h-12 w-full flex-row items-center justify-start overflow-clip text-ellipsis px-3'>
+            <div className='flex flex-row items-center justify-start w-full h-12 px-3 overflow-clip text-ellipsis'>
                 <Icon form={form} />
                 <input
                     type='text'
                     {...form.register('title')}
-                    className='text-asideIcon h-full w-full bg-transparent font-kite-one text-2xl outline-none'
+                    className='w-full h-full text-2xl bg-transparent outline-none text-asideIcon font-kite-one'
                 />
             </div>
             <Error error={error} />
@@ -186,61 +159,7 @@ function PreNewNote({router}: {router: AppRouterInstance}) {
                     placeholder='start your writing from here...'
                     disabled={dragging}
                 />
-                {Object.entries(currentSticker).map(([index, sticker]) => (
-                    <Rnd
-                        key={index}
-                        default={{
-                            x: sticker.position.x,
-                            y: sticker.position.y,
-                            width: sticker.size.width,
-                            height: sticker.size.height,
-                        }}
-                        onDragStart={(e, d) => {
-                            setDragging(true);
-                        }}
-                        onDragStop={(e, d) => {
-                            setDragging(false);
-                            setCurrentSticker((prev) => ({
-                                ...prev,
-                                [index]: {
-                                    ...prev[parseInt(index)],
-                                    position: {
-                                        x: d.x,
-                                        y: d.y,
-                                    },
-                                },
-                            }));
-                        }}
-                        onResizeStart={(e, d) => {
-                            setDragging(true);
-                        }}
-                        onResizeStop={(e, direction, ref, delta, position) => {
-                            setDragging(false);
-                            setCurrentSticker((prev) => ({
-                                ...prev,
-                                [index]: {
-                                    ...prev[parseInt(index)],
-                                    size: {
-                                        width: ref.offsetWidth,
-                                        height: ref.offsetHeight,
-                                    },
-                                    position: {
-                                        x: position.x,
-                                        y: position.y,
-                                    },
-                                },
-                            }));
-                        }}
-                        bounds='parent'>
-                        <Image
-                            src={sticker.src}
-                            alt={sticker.name}
-                            className={`${
-                                dragging ? 'border border-shadow' : ''
-                            } w-full h-full object-contain hover:border hover:border-shadow`}
-                        />
-                    </Rnd>
-                ))}
+                <StickerBoard setDragging={setDragging} />
             </div>
         </form>
     );

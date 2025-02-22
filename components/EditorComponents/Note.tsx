@@ -9,49 +9,20 @@ import Icon from './Icon';
 import dynamic from 'next/dynamic';
 import {useDebounce} from '@/hooks/useDebounce';
 import {useTranslation} from 'react-i18next';
-import {useNoteStore} from '@/store/note';
+import {useNoteStore} from '@/zustand-store/note';
 import Error from '@/components/Error';
 import Success from '@/components/Success';
-import {Rnd} from 'react-rnd';
-import Image, {StaticImageData} from 'next/image';
-import { Sticker } from '@/types';
+import StickerBoard from './StickerBoard';
+
 const BiSolidSave = dynamic(() => import('react-icons/bi').then((mod) => mod.BiSolidSave));
 const AiOutlineFullscreen = dynamic(() =>
     import('react-icons/ai').then((mod) => mod.AiOutlineFullscreen)
 );
-type CurrenStickers = {
-    [index: number]: {
-        size: {
-            width: number;
-            height: number;
-        };
-        position: {
-            x: number;
-            y: number;
-        };
-        src: StaticImageData;
-        name: string;
-    };
-};
 function PreNote({id}: {id: string}) {
-    const {title, text, icon, state, createdDate, stickers, updateSticker} = useNoteStore();
+    const {title, text, icon, state, createdDate, stickers} = useNoteStore();
     const [error, setError] = useState<number>(0);
     const [success, setSuccess] = useState<number>(0);
     const [dragging, setDragging] = useState(false);
-    const [currentSticker, setCurrentSticker] = useState<CurrenStickers>({});
-    useEffect(() => {
-        //loading the stickers into currentSticker
-        let current: CurrenStickers = {};
-        stickers.map((sticker, index: number) => {
-            current[index] = {
-                position: {x: sticker.position.x, y: sticker.position.y},
-                size: {width: sticker.size.width, height: sticker.size.height},
-                src: sticker.src,
-                name: sticker.name,
-            };
-        });
-        setCurrentSticker(current);
-    }, [stickers]);
     //TODO:add error handling
     const {t} = useTranslation();
     const form = useForm<z.infer<typeof NoteSchema>>({
@@ -62,8 +33,9 @@ function PreNote({id}: {id: string}) {
             icon: icon,
         },
     });
+
     const onSubmit = (values: z.infer<typeof NoteSchema>) => {
-        editNote(values, state, id, Object.values(currentSticker) as Sticker[]).then((res) => {
+        editNote(values, state, id, stickers).then((res) => {
             if (res.error) {
                 setError(res.error);
             } else if (res.success) {
@@ -149,82 +121,28 @@ function PreNote({id}: {id: string}) {
 
             <Error error={error} />
             <Success success={success} />
-            <div className='relative w-full h-full' ref={fullScreenRef}>
-
-            <textarea
-                {...form.register('text')}
-                ref={(el) => {
-                    form.register('text').ref(el);
-                    textArea = el;
-                }}
-                className='mt-8 min-h-[calc(100vh-200px)] w-full resize-y outline-none'
-                style={memoizedStyles}
-                placeholder='start your writing from here...'
-                disabled={dragging}
-            />
-
-            {Object.entries(currentSticker).map(([index, sticker]) => (
-                <Rnd
-                    key={index}
-                    default={{
-                        x: sticker.position.x,
-                        y: sticker.position.y,
-                        width: sticker.size.width,
-                        height: sticker.size.height,
+            <div
+                className='relative w-full h-full'
+                ref={fullScreenRef}>
+                <textarea
+                    {...form.register('text')}
+                    ref={(el) => {
+                        form.register('text').ref(el);
+                        textArea = el;
                     }}
-                    onDragStart={(e, d) => {
-                        setDragging(true);
-                    }}
-                    onDragStop={(e, d) => {
-                        setDragging(false);
-                        setCurrentSticker((prev) => ({
-                            ...prev,
-                            [index]: {
-                                ...prev[parseInt(index)],
-                                position: {
-                                    x: d.x,
-                                    y: d.y,
-                                },
-                            },
-                        }));
-                    }}
-                    onResizeStart={(e, d) => {
-                        setDragging(true);
-                    }}
-                    onResizeStop={(e, direction, ref, delta, position) => {
-                        setDragging(false);
-                        setCurrentSticker((prev) => ({
-                            ...prev,
-                            [index]: {
-                                ...prev[parseInt(index)],
-                                size: {
-                                    width: ref.offsetWidth,
-                                    height: ref.offsetHeight,
-                                },
-                                position: {
-                                    x: position.x,
-                                    y: position.y,
-                                },
-                            },
-                        }));
-                    }}
-                    bounds='parent'>
-                    <Image
-                        src={sticker.src}
-                        alt={sticker.name}
-                        className={`${
-                            dragging ? 'border border-shadow' : ''
-                        } w-full h-full object-contain hover:border hover:border-shadow`}
-                        />
-                </Rnd>
-            ))}
+                    className='mt-8 min-h-[calc(100vh-200px)] w-full resize-y outline-none'
+                    style={memoizedStyles}
+                    placeholder='start your writing from here...'
+                    disabled={dragging}
+                />
+                <StickerBoard setDragging={setDragging} />
             </div>
-            <h3 className={`-mt-2 mb-8 h-12 w-full p-4 font-sans font-thin`}>
+            <h3 className={`-mt-8 mb-8 h-12 w-full p-4 font-sans font-thin`}>
                 {t('createdAt')} {createdDate}
             </h3>
         </form>
     );
 }
 
-// const Note = React.memo(PreNote);
-export default PreNote;
+const Note = React.memo(PreNote);
+export default Note;

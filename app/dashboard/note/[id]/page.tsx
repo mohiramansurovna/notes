@@ -8,7 +8,7 @@ export default async function page({params}: {params: Promise<{id: string}>}) {
     try{
         note = await getNoteById(id)
     }catch(error){
-        console.log('Error from note/id/page 90909090909090',error)
+        console.log('Error from note/id/page',error)
     }
     return (
         note && (

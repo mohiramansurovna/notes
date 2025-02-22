@@ -1,6 +1,6 @@
 'use server';
 
-import {State, Sticker} from '@/types';
+import {State, Stickers} from '@/types';
 import {db} from '@/lib/db';
 import {NoteSchema} from '@/schemas';
 import {z} from 'zod';
@@ -9,7 +9,7 @@ export default async function createNote(
     values: z.infer<typeof NoteSchema>,
     state: State,
     userId: string,
-    stickers:Sticker[]
+    stickers:Stickers
 ) {
     let jsonState = JSON.stringify(state);
     let stickersJson=JSON.stringify(stickers);

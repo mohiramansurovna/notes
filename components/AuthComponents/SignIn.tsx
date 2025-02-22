@@ -12,10 +12,14 @@ import Success from '@/components/Success';
 import {useTransition} from 'react';
 import {AppRouterInstance} from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import Socials from './Socials';
+import {useTheme} from 'next-themes';
+import {useTranslation} from 'react-i18next';
 export function SignIn({router}: {router: AppRouterInstance}) {
     const [success, setSuccess] = useState<number>();
     const [error, setError] = useState<number>();
     const [isPending, startTransition] = useTransition();
+    const {resolvedTheme} = useTheme();
+    const {t} = useTranslation();
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
@@ -24,8 +28,8 @@ export function SignIn({router}: {router: AppRouterInstance}) {
         },
     });
     const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-        setError(0)
-        setSuccess(0)
+        setError(0);
+        setSuccess(0);
         startTransition(() => {
             login(values).then((res) => {
                 if (res.error) {
@@ -44,62 +48,49 @@ export function SignIn({router}: {router: AppRouterInstance}) {
     }, [success]);
     return (
         <main>
-            <Image
-                unoptimized={true}
-                src='/Notes.gif'
-                alt='logo'
-                width={320}
-                height={300}
-                className='absolute top-1/4'
-            />
-            <Image
-                src='/Vector (1).svg'
-                alt='logo'
-                width={750}
-                height={750}
-                className='absolute-center w-auto h-auto'
-            />
-            <Image
-                unoptimized={true}
-                src='/Notebook.gif'
-                alt='logo'
-                width={200}
-                height={200}
-                className='absolute top-5 right-10'
-            />
-            <Image
-                src='/blob (1) 1.svg'
-                alt='logo'
-                width={250}
-                height={250}
-                className='absolute top-1/2 right-10 w-auto h-auto'
-            />
+            {resolvedTheme === 'dark' ? (
+                <Image
+                    src='/signInDark.svg'
+                    alt='logo'
+                    width={750}
+                    height={750}
+                    className='absolute w-auto h-auto top-4 left-4'
+                />
+            ) : (
+                <Image
+                    src='/signIn.svg'
+                    alt='logo'
+                    width={750}
+                    height={750}
+                    className='absolute w-auto h-auto top-4 left-4'
+                />
+            )}
 
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <fieldset
                     disabled={isPending}
-                    className='flex flex-col justify-start align-middle w-80 h-3/4 absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/4 transition-opacity duration-75 disabled:opacity-30'>
-                    <h2 className='w-full mt-12 text-3xl font-semibold text-center'>
-                        Welcome Back!
+                    className='absolute flex flex-col justify-center w-full h-full align-middle transition-opacity duration-75 lg:w-80 md:px-44 lg:left-1/2 disabled:opacity-30 p-8 bg-[#f9fafbdd] dark:bg-[#101010cc]'>
+                    <h2 className='w-full mt-12 text-2xl font-semibold text-center text-nowrap'>
+                        {t('readyToWriteYourLyrics')}
                     </h2>
                     <label
                         htmlFor='email'
-                        className='mt-4 pl-2  font-semibold text-lg'>
-                        Email
+                        className='pl-2 mt-4 text-lg font-semibold'>
+                        {t('email')}
                     </label>
                     <input
-                        className='rounded-md px-2 py-1 mt-1 outline-[#a468b3] border border-[#c3a8ca]'
+                        className='rounded-md px-2 py-1 mt-1 outline-[#7E57C2] border border-[#7E57C2]'
                         id='email'
                         type='email'
                         {...form.register('email')}
                     />
                     <label
                         htmlFor='password'
-                        className='mt-4 pl-2 font-semibold text-lg'>
-                        Password
+                        className='pl-2 mt-4 text-lg font-semibold'>
+                        {t('password')}
                     </label>
                     <input
-                        className='rounded-md px-2 py-1 mt-1 outline-[#a468b3]  border border-[#c3a8ca]'
+                        className='rounded-md px-2 py-1 mt-1 outline-[#7E57C2]  border border-[#7E57C2]'
                         id='password'
                         type='password'
                         {...form.register('password')}
@@ -109,20 +100,23 @@ export function SignIn({router}: {router: AppRouterInstance}) {
                     <div className='flex flex-row justify-between mt-10'>
                         <Link
                             href='/auth/'
-                            className='px-12 py-1 border border-[#a468b3] rounded-md text-[#a468b3] font-semibold hover:bg-[#eed1f8] outline-none'>
-                            Cancel
+                            className='px-12 py-1 border border-[#7E57C2] rounded-md text-[#7E57C2] font-semibold outline-none'>
+                            {t('back')}
                         </Link>
                         <button
                             type='submit'
-                            className='px-12 py-1 border bg-[#a468b3] rounded-md font-normal text-white hover:bg-[#9f5ab1] outline-none'>
-                            Login
+                            className='px-12 py-1 bg-[#7E57C2] rounded-md font-normal text-white outline-none'>
+                            {t('signIn')}
                         </button>
                     </div>
-                    <Socials color='#a468b3' signIn/>
+                    {/* <Socials
+                        color='#7E57C2'
+                        signIn
+                    /> */}
                     <Link
                         href='/auth/register'
-                        className='mt-4 text-center hover:underline underline-offset-4 outline-none'>
-                        Don't have an account?
+                        className='mt-4 text-center outline-none hover:underline underline-offset-4'>
+                        {t('noAccount')}
                     </Link>
                 </fieldset>
             </form>

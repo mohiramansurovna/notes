@@ -13,6 +13,8 @@
     "dataSharing": "Ma'lumot almashish",
     "help": "Yordam",
     "name": "Ism",
+    "email": "Elektron pochta",
+    "password": "Parol",
     "currentPassword": "Joriy parol",
     "newPassword": "Yangi parol",
     "confirmPassword": "Parolni tasdiqlang",
@@ -50,6 +52,9 @@
     "createdAt": "Yaratilgan vaqti ",
     "dashboard": "Boshqaruv paneli",
 
+    "signUp": "Ro‘yxatdan o‘tish",
+    "signIn": "Kirish",
+
     "error1": "Eslatmani saqlab bo‘lmadi. Iltimos, qayta urinib ko‘ring.",
     "success1": "Eslatma muvaffaqiyatli saqlandi!",
     "error2": "Noto‘g‘ri sarlavha. Iltimos, to‘g‘ri nom kiriting.",
@@ -65,5 +70,21 @@
     "error9": "UI sozlamalarini saqlab bo‘lmadi. Iltimos, qayta urinib ko‘ring.",
     "success5": "Tizimga muvaffaqiyatli kirdingiz!",
     "error10": "Bu email allaqachon ro‘yxatdan o‘tgan. Iltimos, tizimga kiring.",
-    "success6": "Hisob muvaffaqiyatli yaratildi!"
+    "success6": "Hisob muvaffaqiyatli yaratildi!",
+
+    "greet1": "Men sizga erkinlik berishni xohlardim...",
+    "greet2": "Texnik to'siqlarsiz yaratuvchanlik erkinligini...",
+    "greet3": "Oddiy chegaralardan tashqarida tasavvur qilishni.",
+    "greet4": "Atrofga qarang... Bu qutilarni ko'rayapsizmi?",
+    "greet5": "Ba'zilari mening g'oyalarim bilan to'ldirilgan, imkoniyatlarni namoyish etadi...",
+    "greet6": "Lekin aksariyati ochiq qolgan, sizning tasavvuringizni kutib.",
+    "greet7": "Chunki qolgan hikoyani yaratish sizning qo'lingizda.",
+    "greet8": "Xush kelibsiz,",
+
+    "back": "Orqaga",
+    "haveAccount": "Hisobingiz bormi?",
+    "noAccount": "Hisobingiz yo‘qmi?",
+    "orSignUpWith": "Yoki quyidagilardan biri bilan ro‘yxatdan o‘ting",
+    "orSignInWith": "Yoki quyidagilardan biri bilan tizimga kirish",
+    "readyToWriteYourLyrics":"O`ylaringizni yozishga tayyormisiz?"
 }

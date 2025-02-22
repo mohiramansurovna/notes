@@ -1,11 +1,11 @@
 'use server'
 
-import { State, Sticker } from "@/types"
+import { State, Stickers } from "@/types"
 import { db } from "@/lib/db"
 import { NoteSchema } from "@/schemas"
 import { z } from "zod"
 
-export default async function editNote(values:z.infer<typeof NoteSchema>,state:State, id:string, stickers:Sticker[]){
+export default async function editNote(values:z.infer<typeof NoteSchema>,state:State, id:string, stickers:Stickers){
     let jsonState=JSON.stringify(state);
     let stickerJson=JSON.stringify(stickers)
     const formValues=NoteSchema.safeParse(values)

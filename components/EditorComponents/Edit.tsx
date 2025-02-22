@@ -15,7 +15,7 @@ import {AiOutlineVerticalAlignTop} from 'react-icons/ai';
 import {BiHorizontalLeft} from 'react-icons/bi';
 import {useTranslation} from 'react-i18next';
 import {t} from 'i18next';
-import {useNoteStore} from '@/store/note';
+import {useNoteStore} from '@/zustand-store/note';
 
 const Font = () => {
     const {t} = useTranslation();
@@ -26,7 +26,7 @@ const Font = () => {
             <h3 className='w-full my-2 border border-transparent border-b-[#00000022] dark:border-b-[#ffffff22]'>
                 {t('font')}
             </h3>
-            <div className='grid w-full grid-cols-4 grid-rows-3 gap-2 mb-2 gap-y-3'>
+            <div className='grid w-2/3 grid-cols-4 grid-rows-3 gap-2 mx-12 mb-2 md:mx-0 md:w-full gap-y-3'>
                 <button
                     onClick={() => {
                         setProperty(
@@ -272,7 +272,7 @@ const Shadow = React.memo(() => {
         setProperty('textShadow', shadow);
     }, [shadow]);
     return (
-        <div>
+        <div >
             <h3 className='w-full my-2 border border-transparent border-b-[#00000022] dark:border-b-[#ffffff22]'>
                 {t('shadow')}
             </h3>
@@ -314,7 +314,7 @@ const Shadow = React.memo(() => {
 });
 export default function Edit() {
     return (
-        <div className='flex flex-col items-start justify-start w-48 h-screen gap-5 py-5 overflow-x-hidden overflow-y-scroll text-lg bg-asidebg dark:bg-darkasidebg scroll-smooth'>
+        <div className={`w-full flex flex-col px-[5%] justify-start h-56 overflow-y-scroll overflow-x-hidden bg-asidebg dark:bg-darkasidebg md:w-48 md:h-screen md:px-0 text-lg py-3 gap-5`}>
             <Font />
             <Text />
             <Shadow />

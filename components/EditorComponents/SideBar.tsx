@@ -85,9 +85,9 @@ export default function SideBar() {
 
     //ui___________________________________________________________________________
     const [long, setLong] = useState(true);
-    const asideRef = useRef<HTMLElement | null>(null);
+    const navRef = useRef<HTMLElement | null>(null);
     const handleClickOutside = (event: MouseEvent) => {
-        if (asideRef.current && !asideRef.current.contains(event.target as Node)) {
+        if (navRef.current && !navRef.current.contains(event.target as Node)) {
             setLong(true);
         }
     };
@@ -101,93 +101,100 @@ export default function SideBar() {
     }, []);
 
     return (
-        user && (
-            <aside
+        <nav ref={navRef}>
+            <IoMenuOutline
+                size={25}
+                onClick={() => {
+                    setLong(prev=>!prev);
+                }}
+                className='fixed z-30 top-8 left-4'
+            />
+            {user && (
+                <aside
                 className={`${
-                    long ? 'w-16' : 'w-52'
-                } fixed z-10 flex h-full flex-col justify-between bg-asidebg py-4 shadow-lg dark:bg-darkasidebg
+                        long ? 'hidden md:w-16 md:flex' : 'flex w-52'
+                    } fixed z-20 h-full flex-col justify-start bg-asidebg py-4 shadow-lg shadow-shadow dark:bg-darkasidebg
                  transition-all duration-100`}
-                ref={asideRef}>
-                <section className='flex flex-col justify-center w-full px-2 align-middle h-1/3'>
-                    <ThemeSwitch />
-                    <IoMenuOutline
-                        size={25}
-                        onClick={() => {
-                            setLong(!long);
-                        }}
-                        className='m-3'
+                    >
+                    <section className='flex flex-col justify-start w-full h-48 px-2 mt-12 align-middle'>
+                        <ThemeSwitch/>
+                        <Link
+                            href='/dashboard/'
+                            className={`${
+                                long ? 'w-[50px]' : 'flex flex-row w-full'
+                            } h-[50px] my-2 items-center justify-between rounded-2xl border border-transparent hover:border-main dark:hover:border-darkmain`}>
+                            {!long && (
+                                <p className='m-3 font-medium text-center text-fit'>
+                                    {t('dashboard')}
+                                </p>
+                            )}
+                            <LuLayoutDashboard
+                                size={20}
+                                className='m-3'
+                            />
+                        </Link>
+                        <Link
+                            href='/dashboard/note/create'
+                            className={`${
+                                long ? 'w-[50px]' : 'flex flex-row w-full'
+                            } h-[50px] items-center justify-between rounded-2xl bg-main dark:bg-darkmain`}>
+                            {!long && (
+                                <p className='m-3 font-medium text-center text-fit'>
+                                    {t('newNote')}
+                                </p>
+                            )}
+                            <LuPencil
+                                size={20}
+                                className='m-4'
+                            />
+                        </Link>
+                    </section>
+                    <hr className='w-full h-1 my-4 border-main dark:border-darkmain' />
+                    <section
+                        className={`${
+                            long ? '' : 'gap-0'
+                        } flex flex-col justify-start gap-4 h-full overflow-y-scroll scrollbar-hide`}>
+                        {notes ? (
+                            notes.map((note) => {
+                                return (
+                                    <div
+                                        key={note.id}
+                                        className='flex flex-row w-full h-15'>
+                                        <Link
+                                            href={`/dashboard/note/${note.id}`}
+                                            className={`${
+                                                long
+                                                    ? 'flex-col w-full justify-center align-middle'
+                                                    : 'flex-row w-[176px] -mr-[18px] justify-start items-start p-3 rounded-r-full z-10'
+                                            } flex overflow-clip hover:bg-activebg dark:hover:text-darkbg`}>
+                                            <SendIcon icon={note.icon} />
+                                            <p
+                                                className={`w-full h-full pt-1 mx-1 font-medium text-center duration-100 textdot`}>
+                                                {note.title}
+                                            </p>
+                                        </Link>
+                                        {!long && (
+                                            <div className='text-lg rounded-l-full overflow-clip text-nowrap hover:bg-activebg dark:hover:text-darkbg'>
+                                                <button
+                                                    onClick={() => handleDeleteNote(note.id)}
+                                                    className='w-full h-full pl-5 text-xl'>
+                                                    <LuDelete className='m-1' />
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <div className='w-full h-full px-1 pt-20'>loading, please wait :)</div>
+                        )}
+                    </section>
+                    <ProfileSection
+                        user={user}
+                        long={long}
                     />
-                    <Link
-                        href='/dashboard/'
-                        className={`${
-                            long ? 'w-[50px]' : 'flex flex-row w-full'
-                        } h-[50px] items-center mb-4 justify-between rounded-2xl `}>
-                        {!long && (
-                            <p className='m-3 font-medium text-center text-fit'>{t('dashboard')}</p>
-                        )}
-                        <LuLayoutDashboard
-                            size={20}
-                            className='m-3'
-                        />
-                    </Link>
-                    <Link
-                        href='/dashboard/note/create'
-                        className={`${
-                            long ? 'w-[50px]' : 'flex flex-row w-full'
-                        } h-[50px] items-center justify-between rounded-2xl bg-main dark:bg-darkmain`}>
-                        {!long && (
-                            <p className='m-3 font-medium text-center text-fit'>{t('newNote')}</p>
-                        )}
-                        <LuPencil
-                            size={20}
-                            className='m-4'
-                        />
-                    </Link>
-                </section>
-                <hr className='border-main dark:border-darkmain -my-8 h-1 w-full' />
-                <section
-                 className={`${
-                        long ? '' : 'gap-0'
-                    } flex flex-col justify-start gap-4 h-1/2 overflow-y-scroll scrollbar-hide`}>
-                    {notes ? (
-                        notes.map((note) => {
-                            return (
-                                <div
-                                    key={note.id}
-                                    className='flex flex-row w-full h-15'>
-                                    <Link
-                                        href={`/dashboard/note/${note.id}`}
-                                        className={`${
-                                            long
-                                                ? 'flex-col w-full justify-center align-middle'
-                                                : 'flex-row w-[176px] -mr-[18px] justify-start items-start p-3 rounded-r-full z-10'
-                                        } flex overflow-clip hover:bg-activebg dark:hover:text-darkbg`}>
-                                        <SendIcon icon={note.icon} />
-                                        <p className={`w-full h-full pt-1 mx-1 font-medium text-center duration-100 textdot`}>
-                                            {note.title}
-                                        </p>
-                                    </Link>
-                                    {!long && (
-                                        <div className='text-lg rounded-l-full overflow-clip text-nowrap hover:bg-activebg dark:hover:text-darkbg'>
-                                            <button
-                                                onClick={() => handleDeleteNote(note.id)}
-                                                className='w-full h-full pl-5 text-xl'>
-                                                <LuDelete className='m-1' />
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-                            );
-                        })
-                    ) : (
-                        <div className='w-full h-full px-1 pt-20'>loading, please wait :)</div>
-                    )}
-                </section>
-                <ProfileSection
-                    long={long}
-                    user={user}
-                />
-            </aside>
-        )
+                </aside>
+            )}
+        </nav>
     );
 }

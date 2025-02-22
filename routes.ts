@@ -4,6 +4,7 @@
 */
 export const publicRoutes=[
     "/auth",
+    "/api/stickers",
 ]
 
 

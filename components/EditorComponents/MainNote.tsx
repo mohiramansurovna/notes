@@ -1,15 +1,15 @@
 'use client';
 import Navigation from '@/components/EditorComponents/Navigation';
 import Note from '@/components/EditorComponents/Note';
-import {useNoteStore} from '@/store/note';
-import {State, Sticker} from '@/types';
+import {useNoteStore} from '@/zustand-store/note';
+import {State, Stickers} from '@/types';
 
 import React, {useEffect, useState} from 'react';
 export default function MainNote({
     note,
     id,
 }: {
-    note: {title: string; text: string; createdDate: string; icon: string; state: State, stickers:Sticker[]};
+    note: {title: string; text: string; createdDate: string; icon: string; state: State, stickers:Stickers};
     id: string;
 }) {
     const {setInitialState} = useNoteStore();

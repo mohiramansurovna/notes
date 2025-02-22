@@ -44,17 +44,21 @@ export type State = {
 
 export type Sticker = {
     name: string;
-    src: StaticImageData;
     position: {x: number; y: number};
     size: {width: number; height: number};
 };
+
+export type Stickers={
+    [id:string]:Sticker
+}
+
 export type Note = {
     state: State;
     title: string;
     text: string;
     createdDate: string;
     icon: string;
-    stickers: Sticker[];
+    stickers: Stickers;
 };
 export type ProfileImage = {
     url: string;

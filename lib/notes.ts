@@ -1,5 +1,5 @@
 'use server';
-import {State, Sticker} from '@/types';
+import {State, Stickers} from '@/types';
 import {db} from './db';
 
 function formatDate(date: Date) {
@@ -27,7 +27,7 @@ export async function getNoteById(id: string) {
         });
         if (!note) return null;
         const state = JSON.parse(note.edits as string) as State;
-        const stickers = JSON.parse(note.stickers as string) as Sticker[];
+        const stickers = JSON.parse(note.stickers as string) as Stickers;
         return {
             createdDate: formatDate(note.createdDate),
             text: note.text,

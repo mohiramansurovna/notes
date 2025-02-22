@@ -52,6 +52,7 @@
 }
 .animate-circle-2 {
     animation: circle-2 10s infinite linear;
+
 }
 
 @keyframes circle-2 {
@@ -78,7 +79,7 @@
     padding: 1px;
     border-radius: 10px;
     font-weight: 100;
-    font-size: 11px;
+    font-size: 14px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 100;
     text-wrap: wrap;
@@ -123,8 +124,8 @@ html {
 
     --shadow: var(--pinksh);
     --main: var(--pink);
-    --darkmain:var(--redd);
-    --bg:var(--purplebg);
+    --darkmain:var(--pinkd);
+    --bg:var(--pinkbg);
 
     --font: 16px;
     --font-sm: calc(var(--font) * 0.727);
@@ -141,4 +142,40 @@ html {
 .scrollbar-hide{
     scrollbar-width:none;
     /* scrollbar-color: transparent transparent; */
+}
+
+.animate-heading{
+    animation: heading 7s ease-in-out infinite;
+    position: absolute;
+}
+
+@keyframes heading {
+    0%,5%,90%, 100% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    20%,80%{
+        transform: translateY(0px);
+        opacity: 1;
+    }
+    15%, 85% {
+        opacity: 0;
+    }
+
+    
+}
+.animate-up{
+    animation: up 2s ease-in-out;
+    position: absolute;
+}
+@keyframes up {
+    0%{
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    50%{
+        transform: translateY(0px);
+        opacity: 1;
+    }
+    
 }

@@ -11,12 +11,15 @@ import Error from '@/components/Error';
 import Success from '../Success';
 import {AppRouterInstance} from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import Socials from './Socials';
+import {useTheme} from 'next-themes';
+import { useTranslation } from 'react-i18next';
 
 export default function SignUp({router}: {router: AppRouterInstance}) {
     const [error, setError] = useState<number>();
     const [success, setSuccess] = useState<number>();
     const [isPending, startTransition] = useTransition();
-
+    const {resolvedTheme} = useTheme();
+    const {t}=useTranslation()
     const form = useForm<z.infer<typeof RegisterSchema>>({
         resolver: zodResolver(RegisterSchema),
         defaultValues: {
@@ -50,23 +53,23 @@ export default function SignUp({router}: {router: AppRouterInstance}) {
         }
     }, [success]);
     return (
-        <main className='w-screen h-screen bg-primary'>
+        <main className='w-screen h-screen'>
             <Image
-                src='/blob 1.svg'
-                width={250}
+                src='/signUp2.svg'
+                width={300}
                 height={250}
                 alt='bloob'
-                className='absolute bottom-0 left-0 '
+                className='absolute bottom-0 left-0 -z-10'
             />
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <fieldset
                     disabled={isPending}
-                    className='flex flex-col justify-start align-middle w-80 h-3/4 absolute top-1/2 left-1/4 -translate-y-2/3 disabled:opacity-40 transition-opacity duration-75'>
-                    <h2 className='w-full mt-12 text-3xl font-semibold text-center'>Sign Up</h2>
+                    className='flex flex-col justify-center align-middle w-full lg:w-80 h-screen absolute md:px-44 lg:left-1/4  lg:px-0 px-8  disabled:opacity-40 transition-opacity duration-75 bg-[#f9fafbcc] dark:bg-[#101010ef]'>
+                    <h2 className='w-full mt-12 text-3xl font-semibold text-center'>{t('signUp')}</h2>
                     <label
                         htmlFor='name'
-                        className='mt-10 pl-2 font-semibold text-lg'>
-                        Name
+                        className='pl-2 mt-10 text-lg font-semibold'>
+                        {t('name')}
                     </label>
                     <input
                         className='rounded-md px-2 py-1 mt-1 outline-[#65558F]  border border-[#65558F]'
@@ -76,8 +79,8 @@ export default function SignUp({router}: {router: AppRouterInstance}) {
                     />
                     <label
                         htmlFor='email'
-                        className='mt-4 pl-2  font-semibold text-lg'>
-                        Email
+                        className='pl-2 mt-4 text-lg font-semibold'>
+                        {t('email')}
                     </label>
                     <input
                         className='rounded-md px-2 py-1 mt-1 outline-[#65558F] border border-[#65558F]'
@@ -87,8 +90,8 @@ export default function SignUp({router}: {router: AppRouterInstance}) {
                     />
                     <label
                         htmlFor='password'
-                        className='mt-4 pl-2 font-semibold text-lg'>
-                        Password
+                        className='pl-2 mt-4 text-lg font-semibold'>
+                        {t('password')}
                     </label>
                     <input
                         className='rounded-md px-2 py-1 mt-1 outline-[#65558F]  border border-[#65558F]'
@@ -98,43 +101,56 @@ export default function SignUp({router}: {router: AppRouterInstance}) {
                     />
                     <Error error={error} />
                     <Success success={success} />
-                    <div className='flex flex-row justify-between mt-10'>
+                    <div className='flex flex-row justify-between w-full gap-2 mt-10 font-semibold'>
                         <Link
                             href='/auth/'
-                            className='px-12 py-1 border border-[#65558F] rounded-md text-[#65558F] font-semibold hover:bg-[#dcd0f8] outline-none'>
-                            Cancel
+                            className='px-12 py-1 border border-[#65558F] rounded-md text-[#65558F] outline-none'>
+                            {t('back')}
                         </Link>
                         <button
                             type='submit'
-                            className='px-12 py-1 border bg-[#65558F] rounded-md font-normal text-white hover:bg-[#45307c] outline-none'>
-                            Register
+                            className='px-12 py-1 bg-[#65558F] rounded-md text-white outline-none'>
+                            {t('signUp')}
                         </button>
                     </div>
-                    <Socials
+                    {/* <Socials
                         color='#65558F'
                         signIn={false}
-                    />
+                    /> */}
                     <Link
                         href='/auth/login'
-                        className='mt-4 text-center hover:underline underline-offset-4 outline-none'>
-                        Already has an account?
+                        className='z-20 w-full mt-4 text-center outline-none hover:underline underline-offset-4'>
+                        {t('haveAccount')}
                     </Link>
                 </fieldset>
             </form>
             <Image
-                src='/Vector.svg'
+                src='/signUp1.svg'
                 width={600}
                 height={600}
                 alt='bloob'
-                className='absolute top-0 right-0'
+                className='absolute top-0 right-0 -z-10'
             />
-            <Image
-                src='/Creative writing.gif'
-                width={350}
-                height={350}
-                alt='icon'
-                className='absolute top-[50px] right-[50px]'
-            />
+            <div className='overflow-hidden w-[500px] h-[500px] absolute bottom-0 right-0'>
+                
+            {resolvedTheme === 'dark' ? (
+                <Image
+                src='/signUp.svg'
+                    width={500}
+                    height={500}
+                    alt='icon'
+                    className='absolute bottom-[50px] right-[-50px] -z-10'
+                    />
+                ) : (
+                    <Image
+                    src='/signUpLight.svg'
+                    width={500}
+                    height={500}
+                    alt='icon'
+                    className='absolute bottom-[50px] right-[-50px] -z-10'
+                    />
+                )}
+                </div>
         </main>
     );
 }

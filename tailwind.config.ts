@@ -10,18 +10,17 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
-                mainbg:'var(--mainbg)',
                 // shadow: '#D1C6FA',
                 text: '#4A4459',
                 darktext: '#fee9ce',
                 icon: '#000000DD',
                 darkicon: '#f9f9f9',
-                
+
                 darkshadow: 'var(--shadow)',
-                shadow:'var(--shadow)',
-                main:'var(--main)',
-                darkmain:'var(--darkmain)',
-                darkbg:'#181818',
+                shadow: 'var(--shadow)',
+                main: 'var(--main)',
+                darkmain: 'var(--darkmain)',
+                darkbg: '#181818',
                 asidebg: '#f8fafccc',
                 darkasidebg: '#171717DD',
                 activebg: '#D1C6FA',
@@ -29,7 +28,6 @@ const config: Config = {
                 darkprimarytext: '#f9fafb',
                 primarybg: '#9ca3af',
                 darkprimarybg: '#1f2937',
-
             },
             fontFamily: {
                 akronim: ['var(--font-akronim)'],
@@ -56,6 +54,13 @@ const config: Config = {
                 '3xl': `var(--font-3xl)`,
                 '4xl': `var(--font-4xl)`,
             },
+            borderRadius: {
+                '50': '50px',
+            },
+            boxShadow:{
+                left: '-3px -1px 10px 0 var(--shadow)',
+                up: '-1px -1px 10px 0 var(--shadow)',
+            }
         },
     },
     plugins: [require('tailwindcss-animate')],

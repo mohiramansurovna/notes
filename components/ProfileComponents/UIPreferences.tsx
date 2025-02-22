@@ -55,7 +55,7 @@ export default function UIPreferences({
     return (
         <div
             id='uipreferences'
-            className={`flex flex-col w-3/4 ml-20 py-16 border border-transparent border-dashed`}
+            className={`flex flex-col w-full md:px-24 pt-12 border h-max border-transparent border-dashed`}
             style={{borderTopColor: color}}>
             <h2 className='w-full text-3xl font-semibold'>{t('uiPreferences')}</h2>
             <div id='themes'>
@@ -176,16 +176,16 @@ export default function UIPreferences({
                     {t('darkModeText')}
                 </p>
             </div>
+            <Success success={success} />
+            <Error error={error} />
             <div className='flex flex-row justify-end mt-10'>
                 <button
                     disabled={isLoading}
                     onClick={save}
-                    className={`px-12 py-1 border border-[${color}] rounded-md font-normal outline-none mt-3 w-1/3`}>
+                    className={`px-12 py-1 border border-[${color}] rounded-md font-normal outline-none my-5 w-1/4`}>
                     {t('save')}
                 </button>
             </div>
-            <Success success={success} />
-            <Error error={error} />
         </div>
     );
 }

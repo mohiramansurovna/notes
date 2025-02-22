@@ -13,6 +13,8 @@
     "dataSharing": "Data sharing",
     "help": "Help",
     "name": "Name",
+    "email": "Email",
+    "password": "Password",
     "currentPassword": "Current Password",
     "newPassword": "New Password",
     "confirmPassword": "Confirm Password",
@@ -49,6 +51,11 @@
     "chooseHere": "Choose here",
     "createdAt": "Created at ",
     "dashboard": "Dashboard",
+
+
+    "signUp": "Sign Up",
+    "signIn": "Sign In",
+
     "error1": "Could not save the note. Please try again.",
     "success1": "Note saved successfully!",
     "error2": "Title is invalid. Please enter a valid title.",
@@ -64,5 +71,21 @@
     "error9": "Failed to save UI preferences. Please try again.",
     "success5": "Signed in successfully!",
     "error10": "This email is already registered. Try signing in instead.",
-    "success6": "Account created successfully!"
+    "success6": "Account created successfully!",
+
+    "greet1":"I have been trying to give you the freedom...",
+    "greet2":"The freedom to create without any tech barriers...",
+    "greet3":"To imagine beyond the ordinary box.",
+    "greet4":"Look around... Do you see all these boxes?",
+    "greet5":"Some are filled with my ideas, showing you what's possible...",
+    "greet6":"But most are left open, waiting for your imagination.",
+    "greet7":"Because the rest of the story is yours to create.",
+    "greet8":"Welcome to",
+    "back": "Back",
+    "haveAccount": "Already has an account?",
+    "noAccount": "Don't have an account?",
+    "orSignUpWith": "Or Sign Up with",
+    "orSignInWith": "Or Sign In with",
+    "readyToWriteYourLyrics":"Ready to write your lyrics?"
+
 }

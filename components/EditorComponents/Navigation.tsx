@@ -32,10 +32,9 @@ function PreNavigation() {
     return (
         <aside
             ref={asideRef}
-            className={`fixed top-0 w-[${
-                editing ? '264px' : '64px'
-            }] right-0 flex  flex-row justify-start h-full align-middle transition-all duration-150 shadow-lg shadow-shadow`}>
-            <nav className='flex flex-col items-center justify-center w-16 h-full gap-4 pt-4 bg-asidebg dark:bg-darkasidebg'>
+            className={`fixed z-10 flex flex-col bottom-0 right-0 shadow-up  md:flex-row`}            
+            >
+            <nav className='flex px-3 md:px-0 flex-row items-center justify-center w-screen h-16 gap-4 md:flex-col md:pt-4 md:w-16 md:h-screen bg-asidebg dark:bg-darkasidebg'>
                 <button
                     className={`w-13 h-13 p-3 rounded-2xl  ${
                         editing === 'edit'

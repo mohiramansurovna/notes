@@ -1,10 +1,7 @@
 'use client';
 import Navigation from '@/components/EditorComponents/Navigation';
 import NewNote from '@/components/EditorComponents/NewNote';
-import {useRouter, useSearchParams} from 'next/navigation';
-import React, {useEffect, useReducer} from 'react';
-import {templates} from '@/components/DashboardComponents/Templates';
-
+import {useRouter} from 'next/navigation';
 export default function page() {
     const router = useRouter();
     return (

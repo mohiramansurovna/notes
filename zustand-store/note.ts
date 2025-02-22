@@ -1,13 +1,12 @@
 import {create} from 'zustand';
-import {State, Sticker} from '@/types';
-import {StaticImageData} from 'next/image';
+import {State, Stickers} from '@/types';
 interface NoteStore {
     state: State;
     title: string;
     text: string;
     createdDate: string;
     icon: string;
-    stickers: Sticker[];
+    stickers: Stickers;
     setProperty: <K extends keyof State>(key: K, value: State[K]) => void;
     setNoteDetails: (details: {
         title?: string;
@@ -21,14 +20,15 @@ interface NoteStore {
         text: string;
         createdDate: string;
         icon: string;
-        stickers: Sticker[];
+        stickers: Stickers;
     }) => void;
-    addSticker: (sticker: {name: string; id: string; src: StaticImageData}) => void;
+    addSticker: (name: string) => void;
+    removeSticker: (stickerId: string) => void;
     updateSticker: (
-        stickerId: number,
-        updates: {position?: {x: number; y: number}; size?: {width: number; height: number}}
+        stickerId: string,
+        position?: {x: number; y: number},
+        size?: {width: number; height: number}
     ) => void;
-    removeSticker: (stickerId: number) => void;
 }
 
 export const useNoteStore = create<NoteStore>((set) => ({
@@ -52,7 +52,7 @@ export const useNoteStore = create<NoteStore>((set) => ({
     text: '',
     createdDate: '',
     icon: '',
-    stickers: [],
+    stickers: {},
 
     setProperty: (key, value) =>
         set((state) => ({
@@ -77,34 +77,41 @@ export const useNoteStore = create<NoteStore>((set) => ({
             stickers: note.stickers,
         })),
 
-    addSticker: (sticker: {name: string; id: string; src: StaticImageData}) =>
+    //TODO:find a way of saving the stickers with index not with img data
+    addSticker: (name: string) => {
+        const newId = Date.now().toString();
         set((state) => ({
-            stickers: [
+            stickers: {
                 ...state.stickers,
-                {
-                    ...sticker,
-                    position: {x: 50, y: 50},
+                [newId]: {
+                    name: name,
+                    position: {x: 0, y: 0},
                     size: {width: 100, height: 100},
                 },
-            ],
-        })),
+            },
+        }));
+    },
+    removeSticker: (stickerId) =>
+        set((state) => {
+            const newStickers = {...state.stickers};
+            delete newStickers[stickerId];
+            console.log(newStickers)
+            return {stickers: newStickers};
+        }),
 
     updateSticker: (
-        stickerId: number,
-        updates: {position?: {x: number; y: number}; size?: {width: number; height: number}}
+        stickerId: string,
+        position?: {x: number; y: number},
+        size?: {width: number; height: number}
     ) =>
         set((state) => ({
-            stickers: state.stickers.map((sticker, index) =>
-                index === stickerId ? {...sticker, ...updates} : sticker
-            ),
-        })),
-
-    removeSticker: (stickerId: number) =>
-        set((state) => ({
-            ...state,
-            stickers: [
-                ...state.stickers.slice(0, stickerId),
-                ...state.stickers.slice(stickerId + 1),
-            ],
+            stickers: {
+                ...state.stickers,
+                [stickerId]: {
+                    ...state.stickers[stickerId],
+                    size: size ?? state.stickers[stickerId].size,
+                    position: position ?? state.stickers[stickerId].position,
+                },
+            },
         })),
 }));
